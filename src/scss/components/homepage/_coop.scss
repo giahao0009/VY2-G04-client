@@ -1,0 +1,37 @@
+.section-coop {
+  margin-bottom: 110px;
+  .title {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .reason {
+    max-width: 400px;
+    .img-reason {
+      height: 160px;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .description {
+      font-size: 14px;
+      letter-spacing: 0.1;
+      color: $text-color;
+      line-height: 1.71;
+    }
+  }
+
+  .brand-coop {
+    .description {
+      max-width: 300px;
+      text-align: justify;
+      color: #696969;
+      line-height: 1.4;
+    }
+    .list-brand {
+      display: grid;
+      grid-template-columns: 100px 100px 100px 100px 100px 100px;
+      grid-template-rows: 100px 100px 100px;
+    }
+  }
+}

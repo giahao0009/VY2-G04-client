@@ -1,0 +1,42 @@
+.section-tutorial {
+  margin-top: 100px;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  background-color: $grey-color;
+  h2 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+  .tutorial-description {
+    display: grid;
+    grid-template-columns: 300px 300px 300px;
+    grid-template-rows: 300px 250px;
+    column-gap: 20px;
+    justify-items: center;
+    justify-content: space-around;
+    margin-top: 60px;
+    .number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      border-radius: 50%;
+      line-height: 30px;
+      text-align: center;
+      margin-bottom: 10px;
+      background-color: #20c997;
+    }
+    .title {
+      display: inline-block;
+      width: fit-content;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .description {
+      text-align: justify;
+      margin-top: 20px;
+      line-height: 1.4;
+      color: #696969;
+    }
+  }
+}

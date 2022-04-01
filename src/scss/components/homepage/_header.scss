@@ -1,0 +1,47 @@
+.header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: $white-color;
+
+  .custom-navbar-brand {
+    color: #000;
+    font-weight: medium;
+    position: relative;
+    background-color: $white-color;
+    box-shadow: none;
+  }
+
+  &:before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    position: absolute;
+    top: 0;
+  }
+
+  &:after {
+    content: "";
+    width: 100%;
+    height: 40px;
+    background-color: rgba(242, 243, 243, 1);
+    position: absolute;
+    box-shadow: $header-shadow;
+  }
+
+  .navbar-control {
+    li {
+      display: inline;
+      margin-left: 20px;
+    }
+    span {
+      color: $black-color;
+      margin-left: 5px;
+    }
+    .link-login {
+      color: $text-color;
+    }
+  }
+}
