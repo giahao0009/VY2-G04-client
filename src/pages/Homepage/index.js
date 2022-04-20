@@ -1,19 +1,15 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import Header from "../../components/HomeComponents/Header";
-import Slider from "../../components/HomeComponents/Slider";
-import Coop from "../../components/HomeComponents/Coop";
-import Tutorial from "../../components/HomeComponents/Tutorial";
 import Footer from "../../components/HomeComponents/Footer";
-import Advertisement from "../../components/HomeComponents/Advertisement";
 
 function Homepage() {
   return (
-    <div>
+    <div className="homepage">
       <Header />
-      <Slider />
-      <Coop />
-      <Tutorial />
-      <Advertisement />
+      <div className="body">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

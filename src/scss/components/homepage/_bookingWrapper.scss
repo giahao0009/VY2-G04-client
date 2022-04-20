@@ -1,0 +1,133 @@
+.booking-wrapper {
+  background-image: url("../../../images/airport_transfer_header.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-color: rgba(0, 0, 0, 5);
+  height: 340px;
+  position: relative;
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0.38;
+  }
+  .booking-title {
+    width: 1160px;
+    position: absolute;
+    z-index: 10;
+    top: 30%;
+    left: 0;
+    right: 0;
+    .title {
+      color: $white-color;
+      line-height: 1.18;
+      font-weight: 700;
+      font-size: 44px;
+      margin: 0 auto;
+    }
+    .description {
+      color: $white-color;
+      line-height: 1.44;
+      font-weight: 400;
+      font-size: 16px;
+    }
+  }
+  .booking-search {
+    position: absolute;
+    bottom: -20%;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    .booking-search-wrapper {
+      background-color: $white-color;
+      box-shadow: $shadow;
+      padding: 20px;
+      border-radius: 0 8px 8px 8px;
+      position: relative;
+      .booking-search-tab {
+        position: absolute;
+        top: -44px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        left: 0;
+        padding: 10px 20px;
+        background-color: $white-color;
+        span {
+          margin-right: 20px;
+        }
+        .active {
+          color: $blue-color;
+        }
+      }
+      .booking-search-form {
+        .form-search-group {
+          display: inline-block;
+          margin-right: 10px;
+          position: relative;
+          .input-icon {
+            position: absolute;
+            height: 58px;
+            right: 10px;
+          }
+          input {
+            padding: 0 10px 0px 25px;
+            height: 58px;
+          }
+        }
+        .btn-search {
+          height: 58px;
+          border-radius: 8px;
+          padding: 0 20px;
+        }
+      }
+    }
+  }
+}
+.advantage-content {
+  padding-top: 140px;
+  padding-bottom: 100px;
+  display: flex;
+  justify-content: space-around;
+  .advantage-item {
+    display: flex;
+    .item-icon {
+      min-width: 46px;
+      margin-right: 16px;
+    }
+    .wide-range-of-selections {
+      display: inline-block;
+      background-image: url("https://cdn.klook.com/s/dist_web/desktop/release/transfer-d14a6373c6.png");
+      background-position: 0px -106px;
+      width: 48px;
+      height: 48px;
+    }
+    .no-hidden-costs {
+      display: inline-block;
+      background-image: url("https://cdn.klook.com/s/dist_web/desktop/release/transfer-d14a6373c6.png");
+      background-position: 0px 0px;
+      width: 48px;
+      height: 48px;
+    }
+    .customer-support {
+      display: inline-block;
+      background-image: url("https://cdn.klook.com/s/dist_web/desktop/release/transfer-d14a6373c6.png");
+      background-position: 0px -53px;
+      width: 48px;
+      height: 48px;
+    }
+    .item-detail {
+      width: 300px;
+      .item-detail__title {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 22px;
+      }
+    }
+  }
+}

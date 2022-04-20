@@ -3,40 +3,105 @@
   padding-top: 100px;
   padding-bottom: 100px;
   background-color: $grey-color;
-  h2 {
-    font-weight: bold;
-    font-size: 30px;
-  }
-  .tutorial-description {
-    display: grid;
-    grid-template-columns: 300px 300px 300px;
-    grid-template-rows: 300px 250px;
-    column-gap: 20px;
-    justify-items: center;
-    justify-content: space-around;
-    margin-top: 60px;
-    .number {
-      display: inline-block;
+
+  .tutorial-step {
+    position: relative;
+    width: 448px;
+    &:before {
+      content: attr(data-step);
+      position: absolute;
+      background-color: $blue-color;
+      color: $white-color;
+      border-radius: 50%;
       width: 30px;
       height: 30px;
-      color: #fff;
-      border-radius: 50%;
-      line-height: 30px;
+      box-shadow: $shadow;
       text-align: center;
-      margin-bottom: 10px;
-      background-color: #20c997;
+      line-height: 30px;
+      left: -50px;
     }
     .title {
-      display: inline-block;
-      width: fit-content;
-      font-size: 18px;
+      font-size: 20px;
+      line-height: 24px;
       font-weight: 700;
     }
     .description {
       text-align: justify;
-      margin-top: 20px;
-      line-height: 1.4;
-      color: #696969;
+      margin-top: 10px;
+    }
+  }
+  .step-line {
+    width: 100%;
+    position: relative;
+    display: block;
+    text-align: center;
+    height: 70px;
+    span {
+      width: 600px;
+      display: inline-block;
+      height: 5px;
+      border-bottom: 2px dashed $text-color;
+    }
+    span:before {
+      content: "";
+      height: 50px;
+      width: 25px;
+      border-left: 2px dashed $text-color;
+      border-bottom: 2px dashed $text-color;
+      border-bottom-left-radius: 10px;
+      display: inline-block;
+      float: left;
+      margin-top: -45px;
+      margin-left: -25px;
+    }
+    span:after {
+      content: "";
+      height: 50px;
+      width: 25px;
+      border-right: 2px dashed $text-color;
+      border-top: 2px dashed $text-color;
+      border-top-right-radius: 10px;
+      display: inline-block;
+      float: right;
+      margin-top: 5px;
+      margin-right: -20px;
+    }
+  }
+  .step-line-left {
+    width: 100%;
+    position: relative;
+    display: block;
+    text-align: center;
+    height: 70px;
+    span {
+      width: 600px;
+      display: inline-block;
+      height: 5px;
+      border-bottom: 2px dashed $text-color;
+    }
+    span:before {
+      content: "";
+      height: 50px;
+      width: 25px;
+      border-left: 2px dashed $text-color;
+      border-top: 2px dashed $text-color;
+      border-top-left-radius: 10px;
+      display: inline-block;
+      float: left;
+      margin-top: 5px;
+      margin-left: -25px;
+    }
+    span:after {
+      content: "";
+      height: 50px;
+      width: 25px;
+      border-right: 2px dashed $text-color;
+      border-bottom: 2px dashed $text-color;
+      border-bottom-right-radius: 10px;
+      display: inline-block;
+      float: right;
+      margin-top: -45px;
+      margin-right: -20px;
     }
   }
 }

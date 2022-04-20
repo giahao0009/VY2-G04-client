@@ -1,30 +1,24 @@
 .slider {
-  min-height: 800px;
-  width: 100%;
-  background-image: url(../../../images/slider.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-top: 125px;
-  padding-top: 200px;
-
-  .title {
-    text-align: start;
-    font-size: 40px;
-    font-weight: 700;
-  }
-
-  .description {
-    text-align: justify;
-    max-width: 580px;
-    font-size: 20px;
-    line-height: 25px;
-    letter-spacing: 1px;
-  }
-
-  .btn-order{
-    padding: 10px; 
-    font-size: 20px; 
-    width: 400px;
+  background-image: $background-color-slider;
+  background-color: $blue-color;
+  padding: 40px;
+  .custom-slider-container {
+    padding: 0px 100px;
+    .slider-title {
+      color: $white-color;
+      width: 488px;
+      .title {
+        line-height: 28px;
+        font-size: $font-size-large;
+        font-weight: 700;
+      }
+      .description {
+        font-size: $font-size-comman;
+        line-height: 24px;
+      }
+    }
+    .slider-img {
+      border-radius: 8px;
+    }
   }
 }

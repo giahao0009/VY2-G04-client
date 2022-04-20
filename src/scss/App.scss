@@ -1,12 +1,22 @@
 @import "./variables";
 @import "./mixin";
 @import "./reset";
+@import "./base";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 // Import homapage component
+@import "./components/homepage/homepage";
 @import "./components/homepage/header";
 @import "./components/homepage/slider";
 @import "./components/homepage/coop";
 @import "./components/homepage/tutorial";
 @import "./components/homepage/advertisement";
 @import "./components/homepage/footer";
+@import "./components/homepage/bookingWrapper";
+@import "./components/homepage/payment";
+@import "./components/homepage/bookingVehicle";
+
+// Import admin component
+@import "./components/adminpage/sidebarAdmin";
+@import "./components/adminpage/navbar";
+@import "./components/adminpage/calendar";
