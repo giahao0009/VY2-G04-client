@@ -1,12 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BiBusSchool, BiTrain } from "react-icons/bi";
 import Modal from "../../../components/HomeComponents/Modal";
+import { BookingContext } from "../../../context/booking/BookingContext";
 
 function Vehicle() {
+  const navigate = useNavigate();
   const [typeVehicle, setTypeVehicle] = useState("bus");
   const [modalData, setModalData] = useState({});
+  const [state, dispatch] = useContext(BookingContext);
+
+  console.log(state);
+  // useEffect(() => {
+  //   if (!state.toAddress || !state.fromAddress) {
+  //     navigate("/booking");
+  //   }
+  // }, []);
 
   const data = [
     {
@@ -120,8 +131,6 @@ function Vehicle() {
       distance: "1183.7 km",
     },
   ];
-
-  useEffect(() => {}, []);
 
   return (
     <div className="booking-vehicle-wrapper">
@@ -248,7 +257,7 @@ function Vehicle() {
                           <div>
                             <button
                               type="button"
-                              class="btn btn-primary"
+                              className="btn btn-primary"
                               data-bs-toggle="modal"
                               data-bs-target="#modal"
                               onClick={() => {

@@ -7,6 +7,7 @@ function CreateCar() {
     e.preventDefault();
     try {
       const response = await vehicleApi.createVehicle(vehicle);
+      console.log(response);
       window.alert("Đã thêm dữ liệu xe thành công");
       window.location.reload();
     } catch (err) {
@@ -15,7 +16,12 @@ function CreateCar() {
     }
   };
   const handleOnChange = (e) => {
-    setVehicle({ ...vehicle, [e.target.name]: e.target.value });
+    console.log(vehicle);
+    setVehicle({
+      ...vehicle,
+      [e.target.name]: e.target.value,
+      companyId: "7f709dde-3090-4665-8010-b4de0da3ac13",
+    });
   };
   return (
     <div>
@@ -49,23 +55,24 @@ function CreateCar() {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="carBrand" className="form-label">
+            <label htmlFor="vehicleStatusId" className="form-label">
               Tình trạng xe
             </label>
             <select
-              name="vehicleStatus"
-              id="vehicleStatus"
+              name="vehicleStatusId"
+              id="vehicleStatusId"
               className="form-select"
               onChange={(e) => handleOnChange(e)}
-              defaultValue={"Bình thường"}
             >
-              <option selected value="Bình thường" disabled>
+              <option selected disabled>
                 Tình trạng xe
               </option>
-              <option value="Bình thường">Bình thường</option>
-              <option value="Bảo hành">Bảo hành</option>
-              <option value="Chưa có người lái">Chưa có người lái</option>
-              <option value="Không hoạt động được">Không hoạt động được</option>
+              <option value="7f709dde-3090-4665-8010-b4de0da3ac22">
+                Bình thường
+              </option>
+              <option value="7f709dde-3090-4665-8010-b4de0da3ac23">
+                Chưa có người lái
+              </option>
             </select>
           </div>
           <div className="mb-3">
@@ -87,6 +94,7 @@ function CreateCar() {
               Loại xe
             </label>
             <select
+              name="vehicleTypeId"
               id="vehicleTypeId"
               className="form-select"
               aria-label="Default select example"
@@ -96,8 +104,10 @@ function CreateCar() {
               <option selected value="1" disabled>
                 Lựa chọn loại xe
               </option>
-              <option value="1">Bus</option>
-              <option value="2">Tàu hoả</option>
+              <option value="7f709dde-3090-4665-8010-b4de0da3ac20">Bus</option>
+              <option value="7f709dde-3090-4665-8010-b4de0da3ac21">
+                Tàu hoả
+              </option>
             </select>
           </div>
 

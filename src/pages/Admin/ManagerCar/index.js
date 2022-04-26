@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 function ManagerCar() {
   const [vehicleList, setVehicleList] = useState({});
+  const [vehicleDatatable, setVehicleDatatable] = useState({});
   const [searchValue, setSearchValue] = useState(null);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -19,19 +20,22 @@ function ManagerCar() {
   const headingTable = [
     "Biển số xe",
     "Hiệu xe",
-    "Tình trạng",
     "Số chổ ngồi",
     "Ngày tạo",
     "Ngày cập nhật",
     "Mã loại xe",
+    "Tình trạng",
   ];
 
   const fetchData = async () => {
     const params = {
       page: filters.page,
       size: filters.size,
+      companyid: "7f709dde-3090-4665-8010-b4de0da3ac13",
     };
     const response = await vehicleApi.getVehicleWithPagination(params);
+    console.log(response);
+
     setVehicleList(response);
     setPagination({
       ...pagination,
@@ -43,7 +47,6 @@ function ManagerCar() {
   useEffect(() => {
     fetchData();
   }, [filters]);
-
   const handlePageChange = (newPage) => {
     setFilters({
       ...filters,

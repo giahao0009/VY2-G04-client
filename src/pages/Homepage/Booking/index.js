@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
+import { BookingContext } from "../../../context/booking/BookingContext";
 import { FaPlaneArrival } from "react-icons/fa";
 import { ImLocation2 } from "react-icons/im";
 import Coop from "../../../components/HomeComponents/Coop";
 import Advertisement from "../../../components/HomeComponents/Advertisement";
 import { Link } from "react-router-dom";
 function Booking() {
+  const [state, dispatch] = useContext(BookingContext);
+
+  console.log(state);
+
   return (
     <div className="booking">
       <div className="booking-wrapper">

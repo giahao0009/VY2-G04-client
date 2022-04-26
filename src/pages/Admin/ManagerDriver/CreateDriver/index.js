@@ -8,9 +8,10 @@ function CreateDriver() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await vehicleApi.getAll();
+      console.log(response);
       let list = [];
       response.data.forEach((item) => {
-        if (item.vehicleStatus === "Chưa có người lái") {
+        if (item.vehicleStatusId === "7f709dde-3090-4665-8010-b4de0da3ac23") {
           list.push(item);
         } else {
           return;
@@ -22,21 +23,29 @@ function CreateDriver() {
     fetchData();
   }, []);
   const handleOnChange = (e) => {
-    setDriver({ ...driver, [e.target.name]: e.target.value });
+    setDriver({
+      ...driver,
+      [e.target.name]: e.target.value,
+      companyId: "7f709dde-3090-4665-8010-b4de0da3ac13",
+    });
   };
   const createDriver = async (e) => {
     e.preventDefault();
     try {
       if (window.confirm("Bạn có muốn tạo thông tin tài xế")) {
         const response = await driverApi.createDriver(driver);
+        console.log(response);
         const vehicle = await vehicleApi.getVehicleById(
           response.data.vehicleId
         );
+        console.log(vehicle);
         const updateVehicle = await vehicleApi.updateVehicle(
           response.data.vehicleId,
-          { ...vehicle.data, vehicleStatus: "Bình thường" }
+          {
+            ...vehicle.data,
+            vehicleStatusId: "7f709dde-3090-4665-8010-b4de0da3ac22",
+          }
         );
-        console.log(vehicle);
         console.log(updateVehicle);
         window.alert("Đã thêm dữ liệu thành công");
         window.location.reload();
@@ -84,7 +93,7 @@ function CreateDriver() {
             </label>
             <input
               name="driverBirthDay"
-              type="text"
+              type="date"
               className="form-control"
               id="driverBirthDay"
               onChange={(e) => handleOnChange(e)}

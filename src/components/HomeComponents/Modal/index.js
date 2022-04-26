@@ -14,7 +14,7 @@ function Modal(props) {
     <div
       className="modal fade bd-example-modal-lg"
       id="modal"
-      tabindex="-1"
+      tabIndex="-1"
       aria-hidden="true"
     >
       <div className="modal-dialog modal-lg">

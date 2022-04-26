@@ -71,12 +71,22 @@ function SidebarAdmin() {
           </li>
           <li className="nav-item">
             <CustomLink
+              to="/admin/schedule"
+              className="nav-link d-flex alight-items-center"
+              aria-current="page"
+            >
+              <AiOutlineCarryOut className="icon-sidebarmenu" />
+              <span>Quản lý chuyến xe chạy</span>
+            </CustomLink>
+          </li>
+          <li className="nav-item">
+            <CustomLink
               to="/admin/buses"
               className="nav-link d-flex alight-items-center"
               aria-current="page"
             >
               <AiOutlineCarryOut className="icon-sidebarmenu" />
-              <span>Quản lý chuyến xe</span>
+              <span>Quản lý đặt xe</span>
             </CustomLink>
           </li>
           <li className="nav-item">
