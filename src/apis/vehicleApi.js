@@ -35,6 +35,11 @@ class VehicleApi {
     const url = `/vehicle/deletevehicle/${id}`;
     return axiosClient.delete(url);
   };
+
+  filterVehicle = (params) => {
+    const url = `/vehicle/filterVehicle`;
+    return axiosClient.get(url, { params });
+  };
 }
 
 const vehicleApi = new VehicleApi();

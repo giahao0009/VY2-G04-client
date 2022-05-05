@@ -16,9 +16,14 @@ const styleIcon = {
   color: "grey",
 };
 
+const styleError = {
+  color: "red",
+};
+
 function ModalLogin() {
   let navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [err, setErr] = useState(null);
   const [password, setPassword] = useState("");
   const { isFetching, dispatch } = useContext(AuthContext);
 
@@ -26,14 +31,20 @@ function ModalLogin() {
     e.preventDefault();
     try {
       const response = await userApi.login({ email, password });
-      let user = {
-        name: response.name,
-        accessToken: response.accessToken,
-        email: response.email,
-      };
-      dispatch(loginSuccess(user));
-      window.location.reload();
+      if (response.status == 201) {
+        let user = {
+          name: response.name,
+          accessToken: response.accessToken,
+          email: response.email,
+        };
+        dispatch(loginSuccess(user));
+        window.location.reload();
+      } else {
+        setErr("Có lỗi");
+        return;
+      }
     } catch (err) {
+      setErr(err);
       console.log("ERR: " + err);
     }
   };
@@ -83,6 +94,12 @@ function ModalLogin() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+              {}
+              {err ? (
+                <span style={styleError}>
+                  Tài khoản hoặc mật khẩu không đúng
+                </span>
+              ) : null}
             </div>
             <div className="modal-footer">
               <button

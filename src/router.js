@@ -6,6 +6,7 @@ import Home from "./pages/Homepage/Home";
 import Booking from "./pages/Homepage/Booking";
 import Payment from "./pages/Homepage/Payment";
 import Vehicle from "./pages/Homepage/Vehicle";
+import PaymentStripe from "./pages/Homepage/PaymentStripe";
 
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Admin/Dashboard";
@@ -26,6 +27,7 @@ function Router() {
     <Routes>
       <Route path="/" element={<Homepage />}>
         <Route index element={<Home />} />
+
         <Route
           path="booking"
           element={
@@ -46,11 +48,20 @@ function Router() {
       </Route>
 
       <Route
-        path="/admin"
+        path="booking/payment-stripe"
         element={
           <RequireAuth>
-            <Admin />
+            <PaymentStripe />
           </RequireAuth>
+        }
+      />
+
+      <Route
+        path="/admin"
+        element={
+          <RequireAuthAdmin>
+            <Admin />
+          </RequireAuthAdmin>
         }
       >
         <Route index element={<Dashboard />} />
@@ -73,6 +84,14 @@ function Router() {
 function RequireAuth({ children }) {
   if (!JSON.parse(localStorage.getItem("user"))) {
     window.alert("Hãy đăng nhập tài khoản của bạn để đặt xe !!!");
+    return <Navigate to="/" replace />;
+  }
+  return children;
+}
+
+function RequireAuthAdmin({ children }) {
+  if (!JSON.parse(localStorage.getItem("user"))) {
+    window.alert("Hãy đăng nhập tài khoản của patner để vào trang quản lý !!!");
     return <Navigate to="/" replace />;
   }
   return children;

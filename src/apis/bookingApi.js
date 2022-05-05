@@ -1,7 +1,10 @@
 import axiosCLient from "./axiosClient";
 
 class BookingApi {
-  booking = () => {};
+  bookingVehicle = (payload, config) => {
+    const url = "/booking/bookvehicle";
+    return axiosCLient.post(url, payload, config);
+  };
 }
 
 const bookingApi = new BookingApi();

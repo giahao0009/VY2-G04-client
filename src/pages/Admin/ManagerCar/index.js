@@ -21,6 +21,7 @@ function ManagerCar() {
     "Biển số xe",
     "Hiệu xe",
     "Số chổ ngồi",
+    "Keyword",
     "Ngày tạo",
     "Ngày cập nhật",
     "Mã loại xe",
@@ -31,7 +32,7 @@ function ManagerCar() {
     const params = {
       page: filters.page,
       size: filters.size,
-      companyid: "7f709dde-3090-4665-8010-b4de0da3ac13",
+      companyid: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
     };
     const response = await vehicleApi.getVehicleWithPagination(params);
     console.log(response);

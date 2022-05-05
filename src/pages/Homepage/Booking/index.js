@@ -1,14 +1,61 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { setBooking } from "../../../context/booking/BookingAction";
 import { BookingContext } from "../../../context/booking/BookingContext";
 import { FaPlaneArrival } from "react-icons/fa";
 import { ImLocation2 } from "react-icons/im";
 import Coop from "../../../components/HomeComponents/Coop";
 import Advertisement from "../../../components/HomeComponents/Advertisement";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function Booking() {
-  const [state, dispatch] = useContext(BookingContext);
+  let navigate = useNavigate();
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, "0");
+  let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = today.getFullYear();
 
-  console.log(state);
+  const [state, dispatch] = useContext(BookingContext);
+  const [bookingData, setBookingData] = useState({
+    pickupDate: yyyy + "-" + mm + "-" + dd,
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (handleValidation()) {
+      dispatch(
+        setBooking({
+          fromAddress: "Sân bay quốc tế Tân Sơn Nhất",
+          toAddress: bookingData.toAddress,
+          pickupDate: bookingData.pickupDate,
+          time: bookingData.time,
+        })
+      );
+      navigate("/booking/vehicle");
+    }
+  };
+
+  const handleOnChange = (e) => {
+    e.preventDefault();
+
+    setBookingData({ ...bookingData, [e.target.name]: e.target.value });
+    console.log(bookingData);
+  };
+
+  const handleValidation = () => {
+    if (!bookingData.toAddress) {
+      window.alert("Hãy nhập địa điểm cần đến");
+      return;
+    }
+    if (!bookingData.pickupDate) {
+      window.alert("Hãy nhập ngày đặt xe");
+      return;
+    }
+    if (!bookingData.time) {
+      window.alert("Hãy nhập giờ đặt xe");
+      return;
+    }
+
+    return true;
+  };
 
   return (
     <div className="booking">
@@ -27,25 +74,50 @@ function Booking() {
               <span className="active">Tìm xe đón ở sân bay</span>
               <span>Tìm xe đi sân bay</span>
             </div>
-            <form className="booking-search-form">
+            <form
+              className="booking-search-form"
+              onSubmit={(e) => handleSubmit(e)}
+            >
               <div className="form-search-group">
                 <FaPlaneArrival className="input-icon" />
-                <input placeholder="Lựa chọn sân bay" />
+                <input
+                  name="fromAddress"
+                  value="Sân bay quốc tế Tân Sơn Nhất"
+                  onChange={(e) => handleOnChange(e)}
+                  disabled
+                />
               </div>
               <div className="form-search-group">
                 <ImLocation2 className="input-icon" />
-                <input placeholder="Lựa chọn điểm đến" />
+                <input
+                  name="toAddress"
+                  placeholder="Lựa chọn điểm đến"
+                  onChange={(e) => handleOnChange(e)}
+                  value={bookingData.toAddress}
+                />
               </div>
               <div className="form-search-group">
-                <input placeholder="Ngày đón" type="date" />
+                <input
+                  name="pickupDate"
+                  type="date"
+                  value={bookingData.pickupDate}
+                  onChange={(e) => handleOnChange(e)}
+                  min={yyyy + "-" + mm + "-" + dd}
+                  default
+                />
               </div>
               <div className="form-search-group">
-                <input type="time" />
+                <input
+                  name="time"
+                  type="time"
+                  onChange={(e) => handleOnChange(e)}
+                  value={bookingData.time}
+                />
               </div>
 
-              <Link to="/booking/vehicle" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary">
                 Tìm kiếm
-              </Link>
+              </button>
             </form>
           </div>
         </div>

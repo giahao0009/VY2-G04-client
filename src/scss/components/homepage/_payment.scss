@@ -1,0 +1,77 @@
+.payment-wrapper {
+  background-color: $grey-color;
+  padding-bottom: 50px;
+  .container-custom {
+    padding-left: 280px;
+    padding-right: 280px;
+  }
+  .payment-title {
+    padding-top: 50px;
+    margin-bottom: 20px;
+    .title {
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 24px;
+      letter-spacing: 0.3px;
+    }
+    .sub-title {
+      margin-top: 10px;
+      color: $text-color;
+      font-size: inherit;
+      line-height: 24px;
+    }
+  }
+
+  .cameo-voucher {
+    background-color: $white-color;
+    border-radius: 10px;
+    box-shadow: $shadow;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    p:first-child {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    p:last-child {
+      color: $text-color;
+    }
+  }
+  .info-payment {
+    background-color: $white-color;
+    border-radius: 10px;
+    box-shadow: $shadow;
+    .info-title {
+      padding: 50px 50px 20px 50px;
+      .title {
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.5px;
+      }
+      .description {
+        color: $blue-color;
+      }
+    }
+    hr {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      height: 2 px;
+      margin: 0;
+      margin-top: -1px;
+    }
+    .form-payment {
+      padding: 30px 50px 50px 50px;
+      .phone-country {
+        padding-right: 25px;
+        padding-left: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+
+  .required {
+    color: red;
+  }
+}

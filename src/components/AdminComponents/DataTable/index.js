@@ -24,7 +24,6 @@ function DataTable(props) {
     <table className="table">
       <thead>
         <tr>
-          <th scope="col">#</th>
           {props.headingTable.map((item, index) => {
             return (
               <th key={index} scope="col">
@@ -32,7 +31,6 @@ function DataTable(props) {
               </th>
             );
           })}
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -45,6 +43,9 @@ function DataTable(props) {
                   {moment(item[key]).format("YYYY-MM-DD")}
                 </td>
               );
+            }
+            if (key === "vehicleId") {
+              return;
             }
             if (key == "companyId") {
               return;

@@ -3,134 +3,39 @@ import { useNavigate } from "react-router-dom";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BiBusSchool, BiTrain } from "react-icons/bi";
-import Modal from "../../../components/HomeComponents/Modal";
+import Modal from "../../../components/ModalDetailBooking";
 import { BookingContext } from "../../../context/booking/BookingContext";
+import vehicleApi from "../../../apis/vehicleApi";
 
 function Vehicle() {
   const navigate = useNavigate();
   const [typeVehicle, setTypeVehicle] = useState("bus");
   const [modalData, setModalData] = useState({});
   const [state, dispatch] = useContext(BookingContext);
+  const [vehicles, setVehicles] = useState([]);
 
   console.log(state);
-  // useEffect(() => {
-  //   if (!state.toAddress || !state.fromAddress) {
-  //     navigate("/booking");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (
+      !state.toAddress ||
+      !state.fromAddress ||
+      !state.time ||
+      !state.pickupDate
+    ) {
+      navigate("/booking");
+    }
+  }, []);
 
-  const data = [
-    {
-      id: "1",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "2",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "3",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "4",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "5",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "6",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "7",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "8",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "9",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-    {
-      id: "10",
-      name: "KLIA Ekspres - One-way",
-      image:
-        "https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75",
-      price: "307.860",
-      time: "28 Phút",
-      from: "Kuala Lumpur International",
-      to: "KL Sentral Station",
-      distance: "1183.7 km",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      let params = {
+        keyrelation: "RL01",
+      };
+      const data = await vehicleApi.filterVehicle(params);
+      setVehicles(data.data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="booking-vehicle-wrapper">
@@ -141,18 +46,17 @@ function Vehicle() {
             <div className="info">
               <span className="title-info">Tìm xe đón ở sân bay</span>
               <p>
-                <span>Sân bay quốc tế Tân Sơn Nhất</span> &rarr;
-                <span>682 Sư Vạn Hạnh, TP HCM</span>
+                <span>{state.fromAddress}</span> &rarr;
+                <span>{state.toAddress}</span>
               </p>
             </div>
             <div className="info">
               <span className="title-info">Ngày & Giờ</span>
-              <p>20/04/2022 09:00 AM</p>
+              <p>
+                {state.pickupDate} {state.time}
+              </p>
             </div>
-            <div className="info">
-              <span className="title-info">Số lượng khách</span>
-              <p>2 Khách</p>
-            </div>
+
             <div>
               <button className="btn btn-warning mt-2 me-3">Thay đổi</button>
             </div>
@@ -238,21 +142,21 @@ function Vehicle() {
                 </div>
               </div>
               <div className="list-booking">
-                {data.map((item, index) => {
+                {vehicles.map((item, index) => {
                   return (
                     <div key={index} className="container-fluid booking-item">
                       <div className="row">
                         <div className="col-4">
-                          <img src={item.image} />
+                          <img src="https://ik.imagekit.io/tvlk/image/imageResource/2018/09/17/1537175788462-5964aa6b8e1fd443162671d985498573.jpeg?tr=q-75" />
                         </div>
                         <div className="col-8">
-                          <div className="title">{item.name}</div>
+                          <div className="title">
+                            Xe bus trung tâm thành phố
+                          </div>
                           <div className="lt">Lịch trình</div>
                           <div>
-                            {item.from} &rarr; {item.to}{" "}
-                            <b style={{ fontWeight: "700" }}>
-                              ({item.distance})
-                            </b>
+                            {item.schedulerStart} &rarr; {item.schedulerEnd}
+                            <b style={{ fontWeight: "700" }}> (50KM)</b>
                           </div>
                           <div>
                             <button

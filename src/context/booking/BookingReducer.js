@@ -3,7 +3,17 @@ const BookingReducer = (state, action) => {
     case "SET_BOOKING": {
       let data = action.payload;
       console.log(data);
-      return { ...state };
+      return {
+        ...state,
+        bookingStatus: data.bookingStatus,
+        customerId: data.customerId,
+        fromAddress: data.fromAddress,
+        numberPeoples: data.numberPeoples,
+        pickupDate: data.pickupDate,
+        toAddress: data.toAddress,
+        vehicleId: data.vehicleId,
+        time: data.time,
+      };
     }
     default: {
       return { ...state };
