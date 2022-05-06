@@ -16,6 +16,7 @@ function Modal(props) {
   const navigate = useNavigate();
   const [state, dispatch] = useContext(BookingContext);
   const [numberPeoples, setNumberPeoples] = useState(1);
+  const [totalCost, setTotalCost] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,9 +26,22 @@ function Modal(props) {
         bookingStatus: "Đã đặt",
         vehicleId: props.modalData.vehicleId,
         numberPeoples: numberPeoples,
+        totalCost: totalCost,
       })
     );
     navigate("booking/payment");
+  };
+
+  const handleChangePeoples = (e) => {
+    setNumberPeoples(e.target.value);
+    const baseCost = 100000;
+    let totalCost = baseCost * e.target.value;
+    setTotalCost(totalCost);
+    totalCost = totalCost.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+    document.querySelector(".totalCost").innerText = totalCost;
   };
 
   return (
@@ -71,16 +85,16 @@ function Modal(props) {
                   type="number"
                   min="1"
                   max="100"
-                  onChange={(e) => {
-                    setNumberPeoples(e.target.value);
-                  }}
+                  onChange={(e) => handleChangePeoples(e)}
                 />
               </div>
             </div>
             <div className="modal-footer">
               <div>
                 <span>Tổng tiền</span> <br />
-                <span style={{ color: "#f96d01" }}>307.915 VND</span>
+                <span className="totalCost" style={{ color: "#f96d01" }}>
+                  100.000 VND
+                </span>
               </div>
               <button type="submit" className="btn btn-primary">
                 Đặt ngay

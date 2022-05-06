@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { setBooking } from "../../../context/booking/BookingAction";
 import { BookingContext } from "../../../context/booking/BookingContext";
 import { FaPlaneArrival } from "react-icons/fa";
@@ -6,6 +6,8 @@ import { ImLocation2 } from "react-icons/im";
 import Coop from "../../../components/HomeComponents/Coop";
 import Advertisement from "../../../components/HomeComponents/Advertisement";
 import { Link, useNavigate } from "react-router-dom";
+import stationApi from "../../../apis/stationApi";
+
 function Booking() {
   let navigate = useNavigate();
   let today = new Date();
@@ -14,9 +16,21 @@ function Booking() {
   let yyyy = today.getFullYear();
 
   const [state, dispatch] = useContext(BookingContext);
+  const [stations, setStations] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [bookingData, setBookingData] = useState({
     pickupDate: yyyy + "-" + mm + "-" + dd,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await stationApi.getAll();
+      setStations(result.data);
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,9 +49,28 @@ function Booking() {
 
   const handleOnChange = (e) => {
     e.preventDefault();
-
     setBookingData({ ...bookingData, [e.target.name]: e.target.value });
-    console.log(bookingData);
+  };
+
+  const onSuggestHandler = (item) => {
+    console.log(item);
+    setKeyword(item.stationName);
+    setBookingData({ ...bookingData, toAddress: item.stationName });
+    setSuggestions([]);
+  };
+
+  const handleOnChangeKeyword = (e) => {
+    let keyword = e.target.value;
+    let matches = [];
+    if (keyword.length > 0) {
+      matches = stations.filter((item) => {
+        const regex = new RegExp(`${keyword}`, "gi");
+        return item.stationName.match(regex);
+      });
+    }
+    setSuggestions(matches);
+    setKeyword(keyword);
+    setBookingData({ ...bookingData, [e.target.name]: keyword });
   };
 
   const handleValidation = () => {
@@ -91,10 +124,31 @@ function Booking() {
                 <ImLocation2 className="input-icon" />
                 <input
                   name="toAddress"
+                  type="text"
                   placeholder="Lựa chọn điểm đến"
-                  onChange={(e) => handleOnChange(e)}
-                  value={bookingData.toAddress}
+                  onChange={(e) => handleOnChangeKeyword(e)}
+                  value={keyword}
+                  onBlur={() => {
+                    setTimeout(() => {
+                      setSuggestions([]);
+                    }, 1000);
+                  }}
                 />
+                {suggestions.length > 0 && (
+                  <div className="suggestions-box">
+                    {suggestions.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="suggestion"
+                          onClick={() => onSuggestHandler(item)}
+                        >
+                          {item.stationName}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
               <div className="form-search-group">
                 <input
@@ -110,8 +164,10 @@ function Booking() {
                 <input
                   name="time"
                   type="time"
-                  onChange={(e) => handleOnChange(e)}
-                  value={bookingData.time}
+                  onChange={(e) => {
+                    handleOnChange(e);
+                  }}
+                  value={bookingData.time || ""}
                 />
               </div>
 

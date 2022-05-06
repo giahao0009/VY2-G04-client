@@ -35,6 +35,9 @@ function Vehicle() {
       setVehicles(data.data);
     };
     fetchData();
+    return () => {
+      setVehicles([]);
+    };
   }, []);
 
   return (
