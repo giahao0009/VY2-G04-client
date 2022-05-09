@@ -33,6 +33,7 @@ function ModalLogin() {
       const response = await userApi.login({ email, password });
       if (response.status == 201) {
         let user = {
+          userId: response.userId,
           name: response.name,
           accessToken: response.accessToken,
           email: response.email,

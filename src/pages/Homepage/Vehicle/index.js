@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BiBusSchool, BiTrain } from "react-icons/bi";
-import Modal from "../../../components/ModalDetailBooking";
+import ModalDetailBooking from "../../../components/ModalDetailBooking";
 import { BookingContext } from "../../../context/booking/BookingContext";
 import vehicleApi from "../../../apis/vehicleApi";
 
@@ -13,6 +13,7 @@ function Vehicle() {
   const [modalData, setModalData] = useState({});
   const [state, dispatch] = useContext(BookingContext);
   const [vehicles, setVehicles] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
 
   console.log(state);
   useEffect(() => {
@@ -33,6 +34,7 @@ function Vehicle() {
       };
       const data = await vehicleApi.filterVehicle(params);
       setVehicles(data.data);
+      console.log(data);
     };
     fetchData();
     return () => {
@@ -165,10 +167,9 @@ function Vehicle() {
                             <button
                               type="button"
                               className="btn btn-primary"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modal"
                               onClick={() => {
                                 setModalData(item);
+                                setModalShow(true);
                               }}
                             >
                               Đặt ngay
@@ -184,7 +185,11 @@ function Vehicle() {
           </div>
         </div>
       </div>
-      <Modal modalData={modalData} />
+      <ModalDetailBooking
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        modalData={modalData}
+      />
     </div>
   );
 }

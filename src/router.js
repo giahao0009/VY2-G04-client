@@ -38,7 +38,7 @@ function Router() {
         />
         <Route path="booking/vehicle" element={<Vehicle />} />
         <Route
-          path="booking/payment"
+          path="booking/vehicle/payment"
           element={
             <RequireAuth>
               <Payment />

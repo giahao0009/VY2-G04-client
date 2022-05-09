@@ -1,70 +1,82 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { BookingContext } from "../../context/booking/BookingContext";
 import Chip from "../../images/chip.png";
 import Visa from "../../images/visa.png";
+import {
+  PaymentElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 
-function FormPayment() {
-  const [years, setYears] = useState([]);
-  const [months, setMonths] = useState([]);
+function FormPayment(props) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [state, dispatch] = useContext(BookingContext);
+
+  const [message, setMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  console.log(state);
 
   useEffect(() => {
-    let currentYear = new Date().getFullYear();
-    for (let i = 1950; i <= currentYear; ++i) {
-      setYears((year) => [...year, i]);
+    if (!stripe) return;
+    const clientSecret = props.clientSecret;
+    if (!clientSecret) {
+      return;
     }
-    for (let i = 1; i <= 12; ++i) {
-      setMonths((month) => [...month, i]);
+    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      switch (paymentIntent.status) {
+        case "succeeded":
+          setMessage("Payment succeeded!");
+          break;
+        case "processing":
+          setMessage("Your payment is processing.");
+          break;
+        case "requires_payment_method":
+          setMessage("Your payment was not successful, please try again.");
+          break;
+        default:
+          setMessage("Something went wrong.");
+          break;
+      }
+    });
+  }, [stripe]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
     }
-  }, []);
 
-  const cardNumberOnChange = (e) => {
-    let result = Number(e.target.value);
-    if (typeof result === "number") {
-      document.querySelector(".card-number-box").innerText = result;
-    } else if (!typeof result === "number") {
-      document.querySelector(".card-number-box").innerText = "################";
+    setIsLoading(true);
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        // Make sure to change this to your payment completion page
+        return_url: "http://localhost:3000",
+        receipt_email: email,
+      },
+    });
+
+    if (!error) {
     }
-    if (!e.target.value) {
-      document.querySelector(".card-number-box").innerText = "################";
+
+    // This point will only be reached if there is an immediate error when
+    // confirming the payment. Otherwise, your customer will be redirected to
+    // your `return_url`. For some payment methods like iDEAL, your customer will
+    // be redirected to an intermediate site first to authorize the payment, then
+    // redirected to the `return_url`.
+    if (error.type === "card_error" || error.type === "validation_error") {
+      setMessage(error.message);
+    } else {
+      setMessage("c");
     }
-  };
 
-  const cardHolderOnChange = (e) => {
-    document.querySelector(".card-holder-name").innerText = e.target.value;
-    if (!e.target.value) {
-      document.querySelector(".card-holder-name").innerText = "Full name";
-    }
-  };
-
-  const cardMonthOnChange = (e) => {
-    document.querySelector(".exp-month").innerText = e.target.value;
-    if (!e.target.value) {
-      document.querySelector(".exp-month").innerText = "mm";
-    }
-  };
-
-  const cardYearOnChange = (e) => {
-    document.querySelector(".exp-year").innerText = e.target.value;
-    if (!e.target.value) {
-      document.querySelector(".exp-year").innerText = "yy";
-    }
-  };
-
-  const cardCvvOnMouseEnter = () => {
-    document.querySelector(".front").style.transform =
-      "perspective(1000px) rotateY(-180deg)";
-    document.querySelector(".back").style.transform =
-      "perspective(1000px) rotateY(0deg)";
-  };
-
-  const cardCvvOnMouseOver = () => {
-    document.querySelector(".front").style.transform =
-      "perspective(1000px) rotateY(0deg)";
-    document.querySelector(".back").style.transform =
-      "perspective(1000px) rotateY(180deg)";
-  };
-
-  const cardCvvOnChange = (e) => {
-    document.querySelector(".cvv-box").innerText = e.target.value;
+    setIsLoading(false);
   };
 
   return (
@@ -100,79 +112,48 @@ function FormPayment() {
           </div>
         </div>
       </div>
-      <form className="form-payment">
-        <div className="inputBox">
-          <span>Card number</span>
-          <input
-            type="text"
-            maxLength="16"
-            className="card-number-input"
-            onChange={(e) => cardNumberOnChange(e)}
-          />
-        </div>
-        <div className="inputBox">
-          <span>Card holder</span>
-          <input
-            type="text"
-            maxLength="16"
-            className="card-holder-input"
-            onChange={(e) => cardHolderOnChange(e)}
-          />
-        </div>
-        <div className="flexBox">
-          <div className="inputBox">
-            <span>Expiration mm</span>
-            <select
-              name=""
-              id=""
-              className="month-input"
-              onChange={(e) => cardMonthOnChange(e)}
-            >
-              <option value="month" selected disabled>
-                Month
-              </option>
-              {months.map((item, index) => {
-                return (
-                  <option key={index} value={item}>
-                    {item}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div className="inputBox">
-            <span>Expiration yy</span>
-            <select
-              name=""
-              id=""
-              className="year-input"
-              onChange={(e) => cardYearOnChange(e)}
-            >
-              <option value="year" selected disabled>
-                Year
-              </option>
-              {years.map((item, index) => {
-                return (
-                  <option key={index} value={item}>
-                    {item}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div className="inputBox">
-            <span>CVV</span>
-            <input
-              type="text"
-              maxLength="4"
-              className="cvv-input"
-              onMouseEnter={() => cardCvvOnMouseEnter()}
-              onMouseLeave={() => cardCvvOnMouseOver()}
-              onChange={(e) => cardCvvOnChange(e)}
-            />
-          </div>
-        </div>
-        <input type="submit" value="submit" className="submit-btn" />
+      <form
+        id="payment-form"
+        className="form-payment mt-3"
+        onSubmit={(e) => handleSubmit(e)}
+      >
+        <label
+          style={{
+            marginBottom: "0.25rem",
+            fontSize: "0.93rem",
+            fontWeight: "400",
+            transition:
+              " transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1)",
+            color: "#8d8d8d",
+            width: "100%",
+            textAlign: "start",
+          }}
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          type="text"
+          value={state.cusEmail}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter email address"
+          className="form-control mb-2"
+        />
+        <PaymentElement id="payment-element" />
+        <button
+          disabled={isLoading || !stripe || !elements}
+          id="submit"
+          className="submit-btn"
+          type="submit"
+        >
+          <span id="button-text">
+            {isLoading ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now"
+            )}
+          </span>
+        </button>
       </form>
     </div>
   );

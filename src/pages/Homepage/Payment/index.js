@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { BookingContext } from "../../../context/booking/BookingContext";
+import { setBooking } from "../../../context/booking/BookingAction";
 import VietnamIcon from "../../../images/vietnam.png";
+import { useNavigate } from "react-router-dom";
 
 function Payment() {
+  const navigate = useNavigate();
+  const [state, dispatch] = useContext(BookingContext);
+  const [cusName, setCusName] = useState("");
+  const [cusEmail, setCusEmail] = useState("");
+  const [cusPhone, setCusPhone] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (cusName == "" || cusEmail == "" || cusPhone == "") {
+      window.location.alert("Hãy nhập đầy đủ thông tin thanh toán");
+      return;
+    }
+    await dispatch(
+      setBooking({
+        ...state,
+        cusName: cusName,
+        cusEmail: cusEmail,
+        cusPhone: cusPhone,
+      })
+    );
+    navigate("/booking/payment-stripe");
+  };
+
   return (
     <div className="payment-wrapper">
       <div className="container-custom">
@@ -26,16 +52,18 @@ function Payment() {
               </div>
               <hr />
               <div className="form-payment">
-                <form>
+                <form onSubmit={(e) => handleSubmit(e)}>
                   <div className="mb-3">
                     <label htmlFor="name" className="form-label">
                       Họ tên <span className="required">*</span>
                     </label>
                     <input
+                      name="cusName"
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       id="name"
                       required
+                      onChange={(e) => setCusName(e.target.value)}
                     />
                   </div>
 
@@ -54,10 +82,12 @@ function Payment() {
                           +84
                         </div>
                         <input
+                          name="cusPhone"
                           type="text"
                           id="phone"
                           className="form-control"
                           required
+                          onChange={(e) => setCusPhone(e.target.value)}
                         />
                       </div>
                     </div>
@@ -66,10 +96,12 @@ function Payment() {
                         Email <span className="required">*</span>
                       </label>
                       <input
+                        name="cusEmail"
                         type="text"
                         id="email"
                         className="form-control w-100"
                         required
+                        onChange={(e) => setCusEmail(e.target.value)}
                       />
                     </div>
                   </div>
@@ -82,11 +114,14 @@ function Payment() {
           </div>
           <div className="col-4">
             <div>
-              <p>Đến Khách Sạn Hoa Thiên</p>
+              <p>Đến {state.toAddress}</p>
               <hr />
               <div>
-                <p>Sân bay quốc tế Tân Sơn Nhất</p>
-                <p>Khách Sạn Hoa Thiên</p>
+                <p>{state.fromAddress}</p>
+                <p>{state.toAddress}</p>
+                <p>Số lượng người đi: {state.numberPeoples}</p>
+                <p>Ngày đặt: {state.pickupDate}</p>
+                <p>Giờ đặt: {state.time}</p>
               </div>
             </div>
           </div>
