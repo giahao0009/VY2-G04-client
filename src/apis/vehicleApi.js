@@ -40,6 +40,11 @@ class VehicleApi {
     const url = `/vehicle/filterVehicle`;
     return axiosClient.get(url, { params });
   };
+
+  getVehicleStatus = () => {
+    const url = `/vehicle/getallstatus`;
+    return axiosClient.get(url);
+  };
 }
 
 const vehicleApi = new VehicleApi();

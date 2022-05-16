@@ -13,6 +13,14 @@ class StationApi {
     const url = "/station/getallstationpagination";
     return axiosClient.get(url, { params });
   };
+  getStationById = (id) => {
+    const url = `/station/getstationbyid/${id}`;
+    return axiosClient.get(url);
+  };
+  updateStationById = (id, data) => {
+    const url = `/station/updatestation/${id}`;
+    return axiosClient.put(url, data);
+  };
 }
 
 const stationApi = new StationApi();

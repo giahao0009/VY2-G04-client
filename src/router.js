@@ -7,6 +7,7 @@ import Booking from "./pages/Homepage/Booking";
 import Payment from "./pages/Homepage/Payment";
 import Vehicle from "./pages/Homepage/Vehicle";
 import PaymentStripe from "./pages/Homepage/PaymentStripe";
+import HandlePayment from "./pages/HandlePayment";
 
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Admin/Dashboard";
@@ -17,8 +18,11 @@ import DetailCar from "./pages/Admin/ManagerCar/DetailtCar";
 import DetailDriver from "./pages/Admin/ManagerDriver/DetailDriver";
 import CreateDriver from "./pages/Admin/ManagerDriver/CreateDriver";
 import ManagerStation from "./pages/Admin/ManagerStation";
+import DetailStation from "./pages/Admin/ManagerStation/DetailStation";
 import CreateStation from "./pages/Admin/ManagerStation/CreateStation";
 import ManagerSchedule from "./pages/Admin/ManagerSchedule";
+import CreateScheduler from "./pages/Admin/ManagerSchedule/Create";
+import ManagerVoucher from "./pages/Admin/ManagerVoucher";
 
 import NotFound from "./pages/NotFound";
 
@@ -57,6 +61,15 @@ function Router() {
       />
 
       <Route
+        path="booking/handle-payment"
+        element={
+          <RequireAuth>
+            <HandlePayment />
+          </RequireAuth>
+        }
+      />
+
+      <Route
         path="/admin"
         element={
           <RequireAuthAdmin>
@@ -73,7 +86,10 @@ function Router() {
         <Route path="car/detail/:id" element={<DetailCar />} />
         <Route path="station" element={<ManagerStation />} />
         <Route path="station/createstation" element={<CreateStation />} />
+        <Route path="station/detail/:id" element={<DetailStation />} />
         <Route path="schedule" element={<ManagerSchedule />} />
+        <Route path="voucher" element={<ManagerVoucher />} />
+        <Route path="schedule/createscheduler" element={<CreateScheduler />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

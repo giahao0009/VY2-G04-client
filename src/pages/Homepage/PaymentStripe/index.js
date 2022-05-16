@@ -16,6 +16,7 @@ function PaymentStripe() {
     const fetchClientSecret = async () => {
       const response = await axiosClient.post("/ultils/payment-stripe", {
         items: [{ id: "xl-tshirt" }],
+        email: localStorage.getItem("user").email,
       });
       setClientSecret(response.clientSecret);
     };
@@ -46,6 +47,7 @@ function PaymentStripe() {
         backgroundColor: "#f5f5f5",
         paddingTop: "50px",
         paddingBottom: "50px",
+        height: "100vh",
       }}
     >
       {clientSecret && (

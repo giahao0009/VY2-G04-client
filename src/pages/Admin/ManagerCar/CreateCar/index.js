@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import vehicleApi from "../../../../apis/vehicleApi";
 
 function CreateCar() {
   const [vehicle, setVehicle] = useState({});
+  useEffect(() => {
+    const fetchData = () => {};
+  }, []);
   const createCar = async (e) => {
     e.preventDefault();
-    try {
-      const response = await vehicleApi.createVehicle(vehicle);
-      console.log(response);
-      window.alert("Đã thêm dữ liệu xe thành công");
-      window.location.reload();
-    } catch (err) {
-      window.alert("đã thêm dữ liệu xe thất bại");
-      console.log(err);
+    console.log(handleValidation());
+    if (handleValidation() == true) {
+      try {
+        const response = await vehicleApi.createVehicle(vehicle);
+        console.log(response);
+        window.alert("Đã thêm dữ liệu xe thành công");
+        window.location.reload();
+      } catch (err) {
+        window.alert("đã thêm dữ liệu xe thất bại");
+        console.log(err);
+      }
+    } else {
+      return;
     }
   };
   const handleOnChange = (e) => {
@@ -20,8 +28,109 @@ function CreateCar() {
     setVehicle({
       ...vehicle,
       [e.target.name]: e.target.value,
-      companyId: "7f709dde-3090-4665-8010-b4de0da3ac13",
+      companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
     });
+  };
+  const handleValidation = () => {
+    const vehicleNumberInput = document.querySelector("#vehicleNumber");
+    const vehicleBrand = document.querySelector("#vehicleBrand");
+    const vehicleStatusId = document.querySelector("#vehicleStatusId");
+    const vehicleSeatNumber = document.querySelector("#vehicleSeatNumber");
+    const vehicleTypeId = document.querySelector("#vehicleTypeId");
+    const reg = new RegExp("^[0-9]*$");
+    if (
+      vehicleNumberInput.value == null ||
+      vehicleNumberInput.value == "" ||
+      vehicleNumberInput.value.length == 0
+    ) {
+      const errorBox = document.querySelector(".error-message-vehicleNumber");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập biển số xe nhé";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-vehicleNumber");
+      errorBox.style.display = "none";
+    }
+
+    if (reg.test(vehicleNumberInput.value) == false) {
+      const errorBox = document.querySelector(".error-message-vehicleNumber");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập đúng định dạng biển số xe";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-vehicleNumber");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      vehicleBrand.value == null ||
+      vehicleBrand.value == "" ||
+      vehicleBrand.value.length == 0
+    ) {
+      const errorBox = document.querySelector(".error-message-vehicleBrand");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập hiệu xe nhé";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-vehicleBrand");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      vehicleStatusId.value == null ||
+      vehicleStatusId.value == "" ||
+      vehicleStatusId.value.length == 0 ||
+      vehicleStatusId.value == "Tình trạng xe"
+    ) {
+      const errorBox = document.querySelector(".error-message-vehicleStatusId");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy chọn tình trạng xe nhé";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-vehicleStatusId");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      vehicleSeatNumber.value == null ||
+      vehicleSeatNumber.value == "" ||
+      vehicleSeatNumber.value.length == 0
+    ) {
+      const errorBox = document.querySelector(
+        ".error-message-vehicleSeatNumber"
+      );
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập số lượng ghế ngồi nhé";
+      return false;
+    } else {
+      const errorBox = document.querySelector(
+        ".error-message-vehicleSeatNumber"
+      );
+      errorBox.style.display = "none";
+    }
+
+    if (
+      vehicleTypeId.value == null ||
+      vehicleTypeId.value == "" ||
+      vehicleTypeId.value.length == 0 ||
+      vehicleStatusId.value == "Lựa chọn loại xe"
+    ) {
+      const errorBox = document.querySelector(".error-message-vehicleTypeId");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy lựa chọn loại xe nhé";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-vehicleTypeId");
+      errorBox.style.display = "none";
+    }
+
+    return true;
   };
   return (
     <div>
@@ -41,6 +150,10 @@ function CreateCar() {
               aria-describedby="emailHelp"
             />
           </div>
+          <span
+            className="error-message-vehicleNumber"
+            style={{ display: "none" }}
+          ></span>
           <div className="mb-3">
             <label htmlFor="vehicleBrand" className="form-label">
               Thương hiệu xe
@@ -53,6 +166,10 @@ function CreateCar() {
               onChange={(e) => handleOnChange(e)}
               aria-describedby="emailHelp"
             />
+            <span
+              className="error-message-vehicleBrand"
+              style={{ display: "none" }}
+            ></span>
           </div>
           <div className="mb-3">
             <label htmlFor="vehicleStatusId" className="form-label">
@@ -74,6 +191,10 @@ function CreateCar() {
                 Chưa có người lái
               </option>
             </select>
+            <span
+              className="error-message-vehicleStatusId"
+              style={{ display: "none" }}
+            ></span>
           </div>
           <div className="mb-3">
             <label htmlFor="vehicleSeatNumber" className="form-label">
@@ -88,6 +209,10 @@ function CreateCar() {
               id="vehicleSeatNumber"
               onChange={(e) => handleOnChange(e)}
             />
+            <span
+              className="error-message-vehicleSeatNumber"
+              style={{ display: "none" }}
+            ></span>
           </div>
           <div className="mb-3">
             <label htmlFor="vehicleTypeId" className="form-label">
@@ -109,6 +234,32 @@ function CreateCar() {
                 Tàu hoả
               </option>
             </select>
+            <span
+              className="error-message-vehicleTypeId"
+              style={{ display: "none" }}
+            ></span>
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="vehicleTypeId" className="form-label">
+              Lựa chọn keyword chuyến đi
+            </label>
+            <select
+              name="vehicleTypeId"
+              id="vehicleTypeId"
+              className="form-select"
+              aria-label="Default select example"
+              onChange={(e) => handleOnChange(e)}
+              defaultValue={"1"}
+            >
+              <option selected value="1" disabled>
+                Keyword
+              </option>
+            </select>
+            <span
+              className="error-message-vehicleTypeId"
+              style={{ display: "none" }}
+            ></span>
           </div>
 
           <button type="submit" className="btn btn-primary">

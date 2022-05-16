@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import DataTable from "../../../components/AdminComponents/DataTable";
 import stationApi from "../../../apis/stationApi";
 import ReactPaginate from "react-paginate";
+import moment from "moment";
 
 function ManagerStation() {
-  const headingTable = ["Tên trạm", "Địa chỉ", "Ngày tạo", "Ngày cập nhật"];
   const [stationList, setStationList] = useState([]);
+  console.log(stationList);
   const [pagination, setPagination] = useState({
     page: 1,
     size: 10,
@@ -64,11 +64,38 @@ function ManagerStation() {
           Tìm kiếm
         </button>
       </div>
-      <DataTable
-        dataTable={stationList.data}
-        headingTable={headingTable}
-        itemId={"vehicleId"}
-      />
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Tên trạm</th>
+            <th scope="col">Địa chỉ</th>
+            <th scope="col">Ngày tạo</th>
+            <th scopr="col">Ngày cập nhật</th>
+          </tr>
+        </thead>
+        <tbody>
+          {!stationList.data
+            ? null
+            : stationList.data.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{item.stationName}</td>
+                    <td>{item.stationLocation}</td>
+                    <td>{moment(item.createdAt).format("YYYY-MM-DD")}</td>
+                    <td>{moment(item.updatedAt).format("YYYY-MM-DD")}</td>
+                    <td>
+                      <Link to={"/admin/station/detail/" + item.stationId}>
+                        <button className="btn btn-warning">Chi tiết</button>
+                      </Link>
+                    </td>
+                    <td>
+                      <button className="btn btn-danger">Xoá</button>
+                    </td>
+                  </tr>
+                );
+              })}
+        </tbody>
+      </table>
       <ReactPaginate
         previousLabel={"Prev"}
         nextLabel={"Next"}

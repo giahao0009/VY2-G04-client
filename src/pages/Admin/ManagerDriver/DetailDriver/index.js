@@ -18,6 +18,9 @@ function DetailCar() {
 
   const handleUpdateCar = async (e) => {
     e.preventDefault();
+    if (handleValidation() == false) {
+      return;
+    }
     if (window.confirm("Bạn có muốn thay đổi thông tin của phương tiện")) {
       const response = await driverApi.updateDriver(driver.driverId, driver);
       window.location.reload();
@@ -30,28 +33,121 @@ function DetailCar() {
     setDriver({ ...driver, [e.target.name]: e.target.value });
   };
 
+  const handleValidation = () => {
+    const driverFirstName = document.querySelector("#driverFirstName");
+    const driverLastName = document.querySelector("#driverLastName");
+    const driverBirthDay = document.querySelector("#driverBirthDay");
+    const driverPhone = document.querySelector("#driverPhone");
+    const driverAddress = document.querySelector("#driverAddress");
+    const reg = new RegExp("^[0-9]*$");
+
+    if (
+      driverFirstName.value == "" ||
+      driverFirstName.value == null ||
+      driverFirstName.value.length == 0
+    ) {
+      const errorBox = document.querySelector(".error-message-driverFirstName");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập vào họ của driver nhé !!!";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-driverFirstName");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      driverLastName.value == "" ||
+      driverLastName.value == null ||
+      driverLastName.value.length == 0
+    ) {
+      const errorBox = document.querySelector(".error-message-driverLastName");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập vào tên của driver nhé !!!";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-driverLastName");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      driverBirthDay.value == "" ||
+      driverBirthDay.value == null ||
+      driverBirthDay.value.length == 0
+    ) {
+      const errorBox = document.querySelector(".error-message-driverBirthDay");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập vào ngày sinh của driver nhé !!!";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-driverBirthDay");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      driverPhone.value == "" ||
+      driverPhone.value == null ||
+      driverPhone.value.length == 0
+    ) {
+      const errorBox = document.querySelector(".error-message-driverPhone");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập vào số điện thoại của driver nhé !!!";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-driverPhone");
+      errorBox.style.display = "none";
+    }
+
+    if (reg.test(driverPhone.value) == false) {
+      const errorBox = document.querySelector(".error-message-driverPhone");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText =
+        "Không nhập ký tự trong số điện thoại của driver nhé !!!";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-driverPhone");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      driverAddress.value == null ||
+      driverAddress.value == "" ||
+      driverAddress.value.length == 0
+    ) {
+      const errorBox = document.querySelector(".error-message-driverAddress");
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      errorBox.innerText = "Hãy nhập địa chỉ của driver nhé !!!";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-driverAddress");
+      errorBox.style.display = "none";
+    }
+
+    return true;
+  };
+
   return (
     <div>
       <form onSubmit={(e) => handleUpdateCar(e)}>
-        <div className="mb-3">
-          <label className="form-label">Id tài xế</label>
-          <input
-            name="driverId"
-            type="text"
-            className="form-control"
-            value={driver.driverId}
-            disabled={true}
-          />
-        </div>
         <div className="mb-3">
           <label className="form-label">Họ</label>
           <input
             name="driverFirstName"
             type="text"
             className="form-control"
+            id="driverFirstName"
             value={driver.driverFirstName}
             onChange={(e) => handleOnChange(e)}
           />
+          <span
+            className="error-message-driverFirstName"
+            style={{ display: "none" }}
+          ></span>
         </div>
         <div className="mb-3">
           <label className="form-label">Tên</label>
@@ -59,9 +155,14 @@ function DetailCar() {
             name="driverLastName"
             type="text"
             className="form-control"
+            id="driverLastName"
             value={driver.driverLastName}
             onChange={(e) => handleOnChange(e)}
           />
+          <span
+            className="error-message-driverLastName"
+            style={{ display: "none" }}
+          ></span>
         </div>
         <div className="mb-3">
           <label className="form-label">Ngày sinh</label>
@@ -69,9 +170,14 @@ function DetailCar() {
             name="driverBirthDay"
             type="text"
             className="form-control"
+            id="driverBirthDay"
             value={driver.driverBirthDay}
             onChange={(e) => handleOnChange(e)}
           />
+          <span
+            className="error-message-driverBirthDay"
+            style={{ display: "none" }}
+          ></span>
         </div>
         <div className="mb-3">
           <label className="form-label">Địa chỉ </label>
@@ -79,18 +185,28 @@ function DetailCar() {
             name="driverAddress"
             type="text"
             className="form-control"
+            id="driverAddress"
             value={driver.driverAddress}
           />
+          <span
+            className="error-message-driverAddress"
+            style={{ display: "none" }}
+          ></span>
         </div>
         <div className="mb-3">
           <label className="form-label">Số điện thoại</label>
           <input
-            name="vehicleSeatNumber"
+            name="driverPhone"
             type="text"
             className="form-control"
+            id="driverPhone"
             value={driver.driverPhone}
             onChange={(e) => handleOnChange(e)}
           />
+          <span
+            className="error-message-driverPhone"
+            style={{ display: "none" }}
+          ></span>
         </div>
 
         <div className="mb-3">

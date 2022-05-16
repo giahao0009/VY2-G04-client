@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import driverApi from "../../../apis/driverApi";
-import DataTable from "../../../components/AdminComponents/DataTable";
 import ReactPaginate from "react-paginate";
 
 function ManagerDriver() {
@@ -15,17 +14,6 @@ function ManagerDriver() {
     page: 1,
     size: 10,
   });
-
-  const headingTable = [
-    "Họ",
-    "Tên",
-    "Ngày sinh",
-    "Điện thoại",
-    "Địa chỉ",
-    "Ngày tạo",
-    "Ngày cập nhật",
-    "Mã xe",
-  ];
 
   const fetchData = async () => {
     const params = {
@@ -55,7 +43,12 @@ function ManagerDriver() {
 
   const handleDeleteDriver = (id) => {
     try {
-      driverApi.deleteDriver(id);
+      if (window.confirm("Bạn có muốn xoá thông tin tài xế ???")) {
+        driverApi.deleteDriver(id);
+        window.location.reload();
+      } else {
+        return;
+      }
     } catch (err) {
       console.log(err);
     }
@@ -85,13 +78,42 @@ function ManagerDriver() {
           Tìm kiếm
         </button>
       </div>
-      <DataTable
-        dataTable={driverList.data}
-        headingTable={headingTable}
-        linkDetail={"/admin/driver/detail/"}
-        itemId={"driverId"}
-        handleDelete={handleDeleteDriver}
-      />
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Họ</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Số điện thoại</th>
+          </tr>
+        </thead>
+        <tbody>
+          {!driverList.data
+            ? null
+            : driverList.data.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <th>{item.driverFirstName}</th>
+                    <th>{item.driverLastName}</th>
+                    <th>{item.driverPhone}</th>
+                    <th style={{ padding: "0px", width: "110px" }}>
+                      <Link to={"/admin/driver/detail/" + item.driverId}>
+                        <button className="btn btn-warning">Chi tiết</button>
+                      </Link>
+                    </th>
+                    <th style={{ padding: "0px", width: "110px" }}>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleDeleteDriver(item.driverId)}
+                      >
+                        Xoá
+                      </button>
+                    </th>
+                  </tr>
+                );
+              })}
+        </tbody>
+      </table>
+
       <ReactPaginate
         previousLabel={"Prev"}
         nextLabel={"Next"}

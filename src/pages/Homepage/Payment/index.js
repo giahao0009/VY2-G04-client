@@ -25,6 +25,7 @@ function Payment() {
         cusPhone: cusPhone,
       })
     );
+    localStorage.setItem("transaction", JSON.stringify(state));
     navigate("/booking/payment-stripe");
   };
 

@@ -11,7 +11,7 @@ function ManagerSchedule() {
         }}
       >
         <Link
-          to="/admin/station/createstation"
+          to="/admin/schedule/createscheduler"
           className="btn btn-primary me-2"
         >
           Tạo lịch chạy xe

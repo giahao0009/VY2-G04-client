@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { BookingContext } from "../../context/booking/BookingContext";
-import Chip from "../../images/chip.png";
-import Visa from "../../images/visa.png";
+import { setBooking } from "../../context/booking/BookingAction";
 import {
   PaymentElement,
   useStripe,
@@ -15,16 +14,22 @@ function FormPayment(props) {
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(state);
+  const [email, setEmail] = useState("");
+  const [cardHolder, setCardHolder] = useState("");
 
   useEffect(() => {
     if (!stripe) return;
-    const clientSecret = props.clientSecret;
+
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      "payment_intent_client_secret"
+    );
+
     if (!clientSecret) {
       return;
     }
+
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      console.log(paymentIntent);
       switch (paymentIntent.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
@@ -57,13 +62,10 @@ function FormPayment(props) {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: "http://localhost:3000/booking/handle-payment",
         receipt_email: email,
       },
     });
-
-    if (!error) {
-    }
 
     // This point will only be reached if there is an immediate error when
     // confirming the payment. Otherwise, your customer will be redirected to
@@ -81,64 +83,11 @@ function FormPayment(props) {
 
   return (
     <div className="container">
-      <div className="card-container">
-        <div className="front">
-          <div className="image">
-            <img src={Chip} alt="chip" />
-            <img src={Visa} alt="chip" />
-          </div>
-          <div className="card-number-box">################</div>
-          <div className="flexbox">
-            <div className="box">
-              <span>Card holder</span>
-              <div className="card-holder-name">Full name</div>
-            </div>
-            <div className="box">
-              <span>expiration</span>
-              <div className="expiration">
-                <span className="exp-month">mm</span>
-                {"/"}
-                <span className="exp-year">yy</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="back">
-          <div className="stripe"></div>
-          <div className="box">
-            <span>cvv</span>
-            <div className="cvv-box"></div>
-            <img src={Visa} alt="Visa"></img>
-          </div>
-        </div>
-      </div>
       <form
         id="payment-form"
         className="form-payment mt-3"
         onSubmit={(e) => handleSubmit(e)}
       >
-        <label
-          style={{
-            marginBottom: "0.25rem",
-            fontSize: "0.93rem",
-            fontWeight: "400",
-            transition:
-              " transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1)",
-            color: "#8d8d8d",
-            width: "100%",
-            textAlign: "start",
-          }}
-        >
-          Email
-        </label>
-        <input
-          id="email"
-          type="text"
-          value={state.cusEmail}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter email address"
-          className="form-control mb-2"
-        />
         <PaymentElement id="payment-element" />
         <button
           disabled={isLoading || !stripe || !elements}

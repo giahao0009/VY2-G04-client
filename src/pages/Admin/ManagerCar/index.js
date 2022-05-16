@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 function ManagerCar() {
   const [vehicleList, setVehicleList] = useState({});
-  const [vehicleDatatable, setVehicleDatatable] = useState({});
   const [searchValue, setSearchValue] = useState(null);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -17,17 +16,6 @@ function ManagerCar() {
     size: 10,
   });
 
-  const headingTable = [
-    "Biển số xe",
-    "Hiệu xe",
-    "Số chổ ngồi",
-    "Keyword",
-    "Ngày tạo",
-    "Ngày cập nhật",
-    "Mã loại xe",
-    "Tình trạng",
-  ];
-
   const fetchData = async () => {
     const params = {
       page: filters.page,
@@ -35,7 +23,6 @@ function ManagerCar() {
       companyid: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
     };
     const response = await vehicleApi.getVehicleWithPagination(params);
-    console.log(response);
 
     setVehicleList(response);
     setPagination({
@@ -57,8 +44,12 @@ function ManagerCar() {
 
   const handleDeleteCar = (id) => {
     try {
-      console.log(id);
-      vehicleApi.deleteVehicle(id);
+      if (window.confirm("Bạn có muốn xoá ?")) {
+        vehicleApi.deleteVehicle(id);
+        window.location.reload();
+      } else {
+        return;
+      }
     } catch (err) {
       console.log(err);
     }
@@ -80,7 +71,7 @@ function ManagerCar() {
     }
   };
   return (
-    <div>
+    <div className="container-fluid">
       <div
         style={{
           display: "flex",
@@ -107,13 +98,75 @@ function ManagerCar() {
           Tìm kiếm
         </button>
       </div>
-      <DataTable
-        dataTable={vehicleList.data}
-        headingTable={headingTable}
-        linkDetail={"/admin/car/detail/"}
-        itemId={"vehicleId"}
-        handleDelete={handleDeleteCar}
-      />
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Biển số</th>
+            <th scope="col">Số chổ ngồi</th>
+            <th scope="col">Keyword</th>
+            <th scope="col">Loại xe</th>
+            <th scope="col">Tình trạng</th>
+          </tr>
+        </thead>
+        <tbody>
+          {!vehicleList.data
+            ? null
+            : vehicleList.data.map((item) => {
+                return (
+                  <tr>
+                    <th scope="row">{item.vehicleNumber}</th>
+                    <td> {item.vehicleSeatNumber}</td>
+                    <td>{item.keyRelation}</td>
+                    <td>
+                      {item.vehicleTypeId.trim() == "1" ? (
+                        <span>Bus</span>
+                      ) : (
+                        <span>Tàu</span>
+                      )}
+                    </td>
+                    <td style={{ padding: "0px", width: "150  px" }}>
+                      {item.vehicleStatusId.trim() == "1" ? (
+                        <span
+                          style={{
+                            color: "#fff",
+                            backgroundColor: "green",
+                            padding: "5px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          Bình thường
+                        </span>
+                      ) : (
+                        <span
+                          style={{
+                            color: "#fff",
+                            backgroundColor: "red",
+                            padding: "5px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          Chưa có người lái
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ padding: "0px", width: "110px" }}>
+                      <Link to={"/admin/car/detail/" + item.vehicleId}>
+                        <button className="btn btn-warning">Chi tiết</button>
+                      </Link>
+                    </td>
+                    <td style={{ padding: "0px", width: "110px" }}>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleDeleteCar(item.vehicleId)}
+                      >
+                        Xoá
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+        </tbody>
+      </table>
       <ReactPaginate
         previousLabel={"Prev"}
         nextLabel={"Next"}

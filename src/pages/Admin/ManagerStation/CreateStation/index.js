@@ -8,7 +8,7 @@ function CreateDriver() {
     setStation({
       ...station,
       [e.target.name]: e.target.value,
-      companyId: "7f709dde-3090-4665-8010-b4de0da3ac13",
+      companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
     });
   };
 
@@ -17,8 +17,6 @@ function CreateDriver() {
     try {
       if (window.confirm("Bạn có muốn tạo thông tin địa điểm")) {
         const response = await stationApi.createStation(station);
-        console.log(station);
-        console.log(response);
         window.alert("Đã thêm dữ liệu thành công");
         window.location.reload();
       } else {

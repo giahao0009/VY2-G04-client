@@ -59,17 +59,19 @@ function DataTable(props) {
           return (
             <tr key={index}>
               {row}
-              <td>
-                <Link to={props.linkDetail + item[props.itemId]}>Chi tiết</Link>
+              <td style={{ padding: "0px" }}>
+                <Link to={props.linkDetail + item[props.itemId]}>
+                  <button class="btn btn-warning">Chi tiết</button>
+                </Link>
               </td>
-              <td>
+              <td style={{ padding: "0px" }}>
                 <a
                   href="#"
                   onClick={(e) => {
                     onDelete(e, item[props.itemId]);
                   }}
                 >
-                  Xoá
+                  <button class="btn btn-danger">Xoá</button>
                 </a>
               </td>
             </tr>
