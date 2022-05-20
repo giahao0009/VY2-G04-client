@@ -1,8 +1,9 @@
 import axiosClient from "./axiosClient";
 
 class SchedulerApi {
-  getSchedulerWithVehicleId = () => {
-    const url = "/scheduler/";
+  getAllSchedulerByCompanyId = (params) => {
+    const url = `/scheduler/allscheduler`;
+    return axiosClient.get(url, { params });
   };
 }
 

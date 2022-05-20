@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import schedulerApi from "../../../apis/schedulerApi";
 
 function ManagerSchedule() {
+  const [schedulers, setSchedulers] = useState([]);
+  useEffect(() => {
+    const featchData = async () => {
+      let params = {
+        companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+      };
+      const response = await schedulerApi.getAllSchedulerByCompanyId(params);
+      console.log(response);
+      setSchedulers(response.data);
+    };
+    featchData();
+  }, []);
+  console.log(schedulers);
   return (
     <div>
       <div
@@ -26,7 +40,32 @@ function ManagerSchedule() {
           Tìm kiếm
         </button>
       </div>
-      <div></div>
+      <div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Biển số xe</th>
+              <th>Địa điểm bắt đầu</th>
+              <th>Địa điểm kết thúc</th>
+            </tr>
+          </thead>
+          <tbody>
+            {schedulers.map((item, index) => {
+              return (
+                <tr>
+                  <td>{item.vehicleId}</td>
+                  <td>{item.schedulerStart}</td>
+                  <td>{item.schedulerEnd}</td>
+                  <td>
+                    <button className="btn btn-warning">Chi tiết</button>
+                    <button className="btn btn-danger ms-2">Xoá</button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

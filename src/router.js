@@ -22,6 +22,7 @@ import DetailStation from "./pages/Admin/ManagerStation/DetailStation";
 import CreateStation from "./pages/Admin/ManagerStation/CreateStation";
 import ManagerSchedule from "./pages/Admin/ManagerSchedule";
 import CreateScheduler from "./pages/Admin/ManagerSchedule/Create";
+import CreateDetailScheduler from "./pages/Admin/ManagerSchedule/Create/detail";
 import ManagerVoucher from "./pages/Admin/ManagerVoucher";
 
 import NotFound from "./pages/NotFound";
@@ -88,8 +89,12 @@ function Router() {
         <Route path="station/createstation" element={<CreateStation />} />
         <Route path="station/detail/:id" element={<DetailStation />} />
         <Route path="schedule" element={<ManagerSchedule />} />
-        <Route path="voucher" element={<ManagerVoucher />} />
         <Route path="schedule/createscheduler" element={<CreateScheduler />} />
+        <Route
+          path="schedule/createscheduler/detail"
+          element={<CreateDetailScheduler />}
+        />
+        <Route path="voucher" element={<ManagerVoucher />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
