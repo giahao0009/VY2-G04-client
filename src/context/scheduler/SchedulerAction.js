@@ -1,4 +1,4 @@
-export const setScheduler = (payload) => {
-  type: "SET_SCHEDULER";
-  payload: payload;
-};
+export const setSchedulerState = (payload) => ({
+  type: "SET_SCHEDULER",
+  payload: payload,
+});

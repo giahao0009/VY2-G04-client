@@ -2,8 +2,8 @@ import SchedulerReducer from "./SchedulerReducer";
 import { createContext, useReducer } from "react";
 
 const INITIAL_STATE = {
-  stationStart: null,
-  stationEnd: null,
+  schedulerStart: null,
+  schedulerEnd: null,
   vehicleId: null,
 };
 

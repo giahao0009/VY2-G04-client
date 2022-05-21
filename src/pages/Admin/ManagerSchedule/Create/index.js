@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import vehicleApi from "../../../../apis/vehicleApi";
 import stationApi from "../../../../apis/stationApi";
 import { useNavigate } from "react-router-dom";
+import { SchedulerContext } from "../../../../context/scheduler/SchedulerContext";
+import { setSchedulerState } from "../../../../context/scheduler/SchedulerAction";
 
 function CreateScheduler() {
   let navigate = useNavigate();
   const [vehicles, setVehicles] = useState([]);
   const [stations, setStations] = useState([]);
   const [scheduler, setScheduler] = useState({});
+  const [state, dispatch] = useContext(SchedulerContext);
   useEffect(() => {
     const featchVehicles = async () => {
       const response = await vehicleApi.getAll();
@@ -31,7 +34,88 @@ function CreateScheduler() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (handleValidation() == false) {
+      return;
+    }
+    dispatch(
+      setSchedulerState({
+        schedulerStart: scheduler.schedulerStart,
+        schedulerEnd: scheduler.schedulerEnd,
+        vehicleId: scheduler.vehicleId,
+      })
+    );
     navigate("/admin/schedule/createscheduler/detail");
+  };
+
+  const handleValidation = () => {
+    const schedulerStart = document.querySelector("#schedulerStart").value;
+    const schedulerEnd = document.querySelector("#schedulerEnd").value;
+    const vehicleId = document.querySelector("#vehicleId").value;
+
+    if (
+      !schedulerStart ||
+      schedulerStart == null ||
+      schedulerStart == "" ||
+      schedulerStart.length == 0 ||
+      schedulerStart == "Chọn địa điểm"
+    ) {
+      const errorBox = document.querySelector(".error-message-schedulerStart");
+      errorBox.innerText = "Hãy chọn địa điểm bắt đầu nhé";
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-schedulerStart");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      !schedulerEnd ||
+      schedulerEnd == null ||
+      schedulerEnd == "" ||
+      schedulerEnd.length == 0 ||
+      schedulerEnd == "Chọn địa điểm"
+    ) {
+      const errorBox = document.querySelector(".error-message-schedulerEnd");
+      errorBox.innerText = "Hãy chọn địa điểm bắt đầu nhé";
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-schedulerEnd");
+      errorBox.style.display = "none";
+    }
+
+    if (
+      !vehicleId ||
+      vehicleId == null ||
+      vehicleId == "" ||
+      vehicleId.length == 0 ||
+      vehicleId == "Chọn xe để tạo lịch trình"
+    ) {
+      const errorBox = document.querySelector(".error-message-vehicleId");
+      errorBox.innerText = "Hãy chọn xe nhé";
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-vehicleId");
+      errorBox.style.display = "none";
+    }
+
+    if (schedulerStart == schedulerEnd || schedulerEnd == schedulerStart) {
+      const errorBox = document.querySelector(".error-message-schedulerEnd");
+      errorBox.innerText =
+        "Không thể chọn địa điểm bắt đầu giống địa điểm kết thúc";
+      errorBox.style.display = "inline-block";
+      errorBox.style.color = "red";
+      return false;
+    } else {
+      const errorBox = document.querySelector(".error-message-schedulerEnd");
+      errorBox.style.display = "none";
+    }
+
+    return true;
   };
 
   return (
