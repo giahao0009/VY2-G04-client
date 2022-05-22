@@ -13,6 +13,10 @@ class SchedulerApi {
     const url = `/scheduler/createdetailscheduler`;
     return axiosClient.post(url, data);
   };
+  getDetailScheduler = (id) => {
+    const url = `/scheduler/detail/${id}`;
+    return axiosClient.get(url);
+  };
 }
 
 const schedulerApi = new SchedulerApi();

@@ -137,7 +137,7 @@ function CreateScheduler() {
               </option>
               {stations.map((item, index) => {
                 return (
-                  <option key={index} value={item.stationName}>
+                  <option key={index} value={item.stationId}>
                     {item.stationName}
                   </option>
                 );
@@ -163,7 +163,7 @@ function CreateScheduler() {
               </option>
               {stations.map((item, index) => {
                 return (
-                  <option key={index} value={item.stationName}>
+                  <option key={index} value={item.stationId}>
                     {item.stationName}
                   </option>
                 );

@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import schedulerApi from "../../../apis/schedulerApi";
+import stationApi from "../../../apis/stationApi";
 
 function ManagerSchedule() {
   const [schedulers, setSchedulers] = useState([]);
+  const [stations, setStations] = useState([]);
+  useEffect(() => {
+    const feacthStations = async () => {
+      const response = await stationApi.getAll();
+      setStations(response.data);
+    };
+  }, []);
   useEffect(() => {
     const featchData = async () => {
       let params = {
@@ -52,12 +60,14 @@ function ManagerSchedule() {
           <tbody>
             {schedulers.map((item, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{item.vehicleId}</td>
                   <td>{item.schedulerStart}</td>
                   <td>{item.schedulerEnd}</td>
                   <td>
-                    <button className="btn btn-warning">Chi tiết</button>
+                    <Link to={"/admin/schedule/detail/" + item.schedulerId}>
+                      <button className="btn btn-warning">Chi tiết</button>
+                    </Link>
                     <button className="btn btn-danger ms-2">Xoá</button>
                   </td>
                 </tr>

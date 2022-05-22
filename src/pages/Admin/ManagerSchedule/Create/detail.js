@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function CreateDetailScheduler() {
   let navigate = useNavigate();
+  const [schedulerId, setSchedulerId] = useState("");
   const [stationList, setStationList] = useState([]);
   const [stations, setStations] = useState([]);
   const [state, dispatch] = useContext(SchedulerContext);
@@ -31,6 +32,7 @@ function CreateDetailScheduler() {
       companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
     };
     const response = await schedulerApi.createScheduler(data);
+    setSchedulerId(response.data.schedulerId);
   };
 
   const createDetailScheduler = async (stationId, schedulerId, indexDetail) => {
@@ -40,6 +42,7 @@ function CreateDetailScheduler() {
       indexDetail: indexDetail,
     };
     const response = await schedulerApi.createDetailScheduler(data);
+    console.log(response);
   };
 
   const addStation = () => {
@@ -55,6 +58,11 @@ function CreateDetailScheduler() {
   const handleSubmit = () => {
     const list = document.querySelectorAll(".station-item");
     createScheduler();
+    list.forEach((item, index) => {
+      createDetailScheduler(item.value, schedulerId, index + 1);
+    });
+    window.alert("Tạo lịch chạy xe thành công nhé");
+    navigate("/admin/schedule");
   };
   return (
     <div>
@@ -72,7 +80,7 @@ function CreateDetailScheduler() {
           </option>
           {stations.map((item, index) => {
             return (
-              <option key={index} value={item.stationName}>
+              <option key={index} value={item.stationId}>
                 {item.stationName}
               </option>
             );
@@ -87,7 +95,7 @@ function CreateDetailScheduler() {
             </option>
             {stations.map((item, index) => {
               return (
-                <option key={index} value={item.stationName}>
+                <option key={index} value={item.stationId}>
                   {item.stationName}
                 </option>
               );
@@ -116,7 +124,7 @@ function CreateDetailScheduler() {
           </option>
           {stations.map((item, index) => {
             return (
-              <option key={index} value={item.stationName}>
+              <option key={index} value={item.stationId}>
                 {item.stationName}
               </option>
             );

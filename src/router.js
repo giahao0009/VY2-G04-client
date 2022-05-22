@@ -22,6 +22,7 @@ import DetailStation from "./pages/Admin/ManagerStation/DetailStation";
 import CreateStation from "./pages/Admin/ManagerStation/CreateStation";
 import ManagerSchedule from "./pages/Admin/ManagerSchedule";
 import CreateScheduler from "./pages/Admin/ManagerSchedule/Create";
+import DetailScheduler from "./pages/Admin/ManagerSchedule/Detail";
 import CreateDetailScheduler from "./pages/Admin/ManagerSchedule/Create/detail";
 import ManagerVoucher from "./pages/Admin/ManagerVoucher";
 
@@ -90,6 +91,7 @@ function Router() {
         <Route path="station/detail/:id" element={<DetailStation />} />
         <Route path="schedule" element={<ManagerSchedule />} />
         <Route path="schedule/createscheduler" element={<CreateScheduler />} />
+        <Route path="schedule/detail/:id" element={<DetailScheduler />} />
         <Route
           path="schedule/createscheduler/detail"
           element={<CreateDetailScheduler />}
