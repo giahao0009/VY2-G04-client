@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "./static/css/main.3993b34f.css",
-    "main.js": "./static/js/main.ff7dc9cb.js",
-    "static/media/airport_transfer_header.jpg": "./static/media/airport_transfer_header.9b33fca3f32bb23fc2f5.jpg",
-    "index.html": "./index.html",
-    "main.3993b34f.css.map": "./static/css/main.3993b34f.css.map",
-    "main.ff7dc9cb.js.map": "./static/js/main.ff7dc9cb.js.map"
+    "main.css": "/VY2-G04-client/static/css/main.349ceef4.css",
+    "main.js": "/VY2-G04-client/static/js/main.f1c544ec.js",
+    "static/media/airport_transfer_header.jpg": "/VY2-G04-client/static/media/airport_transfer_header.9b33fca3f32bb23fc2f5.jpg",
+    "index.html": "/VY2-G04-client/index.html",
+    "main.349ceef4.css.map": "/VY2-G04-client/static/css/main.349ceef4.css.map",
+    "main.f1c544ec.js.map": "/VY2-G04-client/static/js/main.f1c544ec.js.map"
   },
   "entrypoints": [
-    "static/css/main.3993b34f.css",
-    "static/js/main.ff7dc9cb.js"
+    "static/css/main.349ceef4.css",
+    "static/js/main.f1c544ec.js"
   ]
 }
