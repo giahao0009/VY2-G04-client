@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/VY2-G04-client/static/css/main.349ceef4.css",
-    "main.js": "/VY2-G04-client/static/js/main.b8cca61f.js",
+    "main.js": "/VY2-G04-client/static/js/main.b9ae197d.js",
     "static/media/airport_transfer_header.jpg": "/VY2-G04-client/static/media/airport_transfer_header.9b33fca3f32bb23fc2f5.jpg",
     "index.html": "/VY2-G04-client/index.html",
     "main.349ceef4.css.map": "/VY2-G04-client/static/css/main.349ceef4.css.map",
-    "main.b8cca61f.js.map": "/VY2-G04-client/static/js/main.b8cca61f.js.map"
+    "main.b9ae197d.js.map": "/VY2-G04-client/static/js/main.b9ae197d.js.map"
   },
   "entrypoints": [
     "static/css/main.349ceef4.css",
-    "static/js/main.b8cca61f.js"
+    "static/js/main.b9ae197d.js"
   ]
 }
