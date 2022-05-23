@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "./static/css/main.3993b34f.css",
+    "main.js": "./static/js/main.ff7dc9cb.js",
+    "static/media/airport_transfer_header.jpg": "./static/media/airport_transfer_header.9b33fca3f32bb23fc2f5.jpg",
+    "index.html": "./index.html",
+    "main.3993b34f.css.map": "./static/css/main.3993b34f.css.map",
+    "main.ff7dc9cb.js.map": "./static/js/main.ff7dc9cb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3993b34f.css",
+    "static/js/main.ff7dc9cb.js"
+  ]
+}
