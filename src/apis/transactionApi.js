@@ -9,6 +9,10 @@ class TransactionApi {
     const url = `/transaction/gettransactionbycomid/${id}`;
     return axiosClient.get(url);
   };
+  getTransactionById = (id) => {
+    const url = `/transaction/gettransactionbyid/${id}`;
+    return axiosClient.get(url);
+  };
 }
 
 const transactionApi = new TransactionApi();

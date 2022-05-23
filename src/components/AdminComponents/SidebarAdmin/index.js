@@ -81,7 +81,7 @@ function SidebarAdmin() {
           </li>
           <li className="nav-item">
             <CustomLink
-              to="/admin/buses"
+              to="/admin/transaction"
               className="nav-link d-flex alight-items-center"
               aria-current="page"
             >

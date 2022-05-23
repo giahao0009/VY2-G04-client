@@ -24,6 +24,8 @@ import ManagerSchedule from "./pages/Admin/ManagerSchedule";
 import CreateScheduler from "./pages/Admin/ManagerSchedule/Create";
 import DetailScheduler from "./pages/Admin/ManagerSchedule/Detail";
 import CreateDetailScheduler from "./pages/Admin/ManagerSchedule/Create/detail";
+import ManagerTransaction from "./pages/Admin/ManagerTransaction";
+import DetailTransaction from "./pages/Admin/ManagerTransaction/Detail";
 import ManagerVoucher from "./pages/Admin/ManagerVoucher";
 
 import NotFound from "./pages/NotFound";
@@ -96,6 +98,8 @@ function Router() {
           path="schedule/createscheduler/detail"
           element={<CreateDetailScheduler />}
         />
+        <Route path="transaction" element={<ManagerTransaction />} />
+        <Route path="transaction/detail/:id" element={<DetailTransaction />} />
         <Route path="voucher" element={<ManagerVoucher />} />
       </Route>
 
