@@ -54,10 +54,7 @@ function ModalDetailBooking(props) {
       <form onSubmit={(e) => handleSubmit(e)}>
         <Modal.Body>
           <div>
-            <div>Mã phương tiện: {props.modalData.vehicleId}</div>
-            <div>Mã nhà cung cấp dịch vụ: {props.modalData.companyId}</div>
             <div>Biển số xe: {props.modalData.vehicleNumber}</div>
-            <div>Hiệu xe: {props.modalData.vehicleBrand}</div>
             <div>Địa điểm bắt đầu: {state.fromAddress}</div>
             <div>Địa điểm đến: {state.toAddress}</div>
             <div>Ngày đón: {state.pickupDate}</div>

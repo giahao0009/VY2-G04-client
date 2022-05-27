@@ -5,15 +5,18 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { BiBusSchool, BiTrain } from "react-icons/bi";
 import ModalDetailBooking from "../../../components/ModalDetailBooking";
 import { BookingContext } from "../../../context/booking/BookingContext";
-import vehicleApi from "../../../apis/vehicleApi";
+import schedulerApi from "../../../apis/schedulerApi";
+import stationApi from "../../../apis/stationApi";
 
 function Vehicle() {
   const navigate = useNavigate();
   const [typeVehicle, setTypeVehicle] = useState("bus");
   const [modalData, setModalData] = useState({});
   const [state, dispatch] = useContext(BookingContext);
-  const [vehicles, setVehicles] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [schedulers, setSchedulers] = useState([]);
+  const [genSchedulers, setGenSchedulers] = useState([]);
+  const [address, setAddress] = useState([]);
 
   console.log(state);
   useEffect(() => {
@@ -29,16 +32,13 @@ function Vehicle() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let params = {
-        keyrelation: "RL01",
-      };
-      const data = await vehicleApi.filterVehicle(params);
-      setVehicles(data.data);
-      console.log(data);
+      const keyData = await stationApi.getStationByName(state.toAddress);
+      const data = await schedulerApi.filterScheduler(keyData.data.keyWord);
+      setSchedulers(data.data);
     };
     fetchData();
     return () => {
-      setVehicles([]);
+      setSchedulers([]);
     };
   }, []);
 
@@ -147,7 +147,7 @@ function Vehicle() {
                 </div>
               </div>
               <div className="list-booking">
-                {vehicles.map((item, index) => {
+                {schedulers.map((item, index) => {
                   return (
                     <div key={index} className="container-fluid booking-item">
                       <div className="row">

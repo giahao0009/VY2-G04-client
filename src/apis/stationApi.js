@@ -21,6 +21,10 @@ class StationApi {
     const url = `/station/updatestation/${id}`;
     return axiosClient.put(url, data);
   };
+  getStationByName = (name) => {
+    const url = `/station/getstationbyname?stationName=${name}`;
+    return axiosClient.get(url);
+  };
 }
 
 const stationApi = new StationApi();

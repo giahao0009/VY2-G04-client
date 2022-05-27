@@ -5,6 +5,9 @@ const INITIAL_STATE = {
   schedulerStart: null,
   schedulerEnd: null,
   vehicleId: null,
+  startAddress: null,
+  endAddress: null,
+  carNumber: null,
 };
 
 export const SchedulerContext = createContext(INITIAL_STATE);

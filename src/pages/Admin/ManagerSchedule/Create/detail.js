@@ -10,7 +10,7 @@ function CreateDetailScheduler() {
   const [stationList, setStationList] = useState([]);
   const [stations, setStations] = useState([]);
   const [state, dispatch] = useContext(SchedulerContext);
-  console.log(stationList);
+
   useEffect(() => {
     if (!state.schedulerStart || !state.schedulerEnd) {
       navigate("/admin/schedule/createscheduler");
@@ -22,27 +22,56 @@ function CreateDetailScheduler() {
       setStations(response.data);
     };
     featchStations();
+    return () => {
+      setStations([]);
+    };
   }, []);
 
-  const createScheduler = async () => {
-    let data = {
-      schedulerStart: state.schedulerStart,
-      schedulerEnd: state.schedulerEnd,
-      vehicleId: state.vehicleId,
-      companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+  const createScheduler = () => {
+    const featch = async () => {
+      let data = {
+        schedulerStart: state.schedulerStart,
+        schedulerEnd: state.schedulerEnd,
+        startAddress: state.startAddress,
+        endAddress: state.endAddress,
+        carNumber: state.carNumber,
+        vehicleId: state.vehicleId,
+        companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+      };
+      const response = await schedulerApi.createScheduler(data);
+      console.log(response);
+      const list = document.querySelectorAll(".station-item");
+      list.forEach((item, index) => {
+        console.log(item.value.split(" ")[1]);
+        let stationId = item.value.split(" ")[0];
+        let keyword = item.value.split(" ")[1];
+        createDetailScheduler(
+          stationId,
+          response.data.schedulerId,
+          index + 1,
+          keyword
+        );
+      });
     };
-    const response = await schedulerApi.createScheduler(data);
-    setSchedulerId(response.data.schedulerId);
+    featch();
   };
 
-  const createDetailScheduler = async (stationId, schedulerId, indexDetail) => {
-    let data = {
-      stationId: stationId,
-      schedulerId: schedulerId,
-      indexDetail: indexDetail,
+  const createDetailScheduler = (
+    stationId,
+    schedulerId,
+    indexDetail,
+    keyWord
+  ) => {
+    const featch = async () => {
+      let data = {
+        stationId: stationId,
+        schedulerId: schedulerId,
+        indexDetail: indexDetail,
+        keyWord: keyWord,
+      };
+      const response = await schedulerApi.createDetailScheduler(data);
     };
-    const response = await schedulerApi.createDetailScheduler(data);
-    console.log(response);
+    featch();
   };
 
   const addStation = () => {
@@ -56,13 +85,10 @@ function CreateDetailScheduler() {
   };
 
   const handleSubmit = () => {
-    const list = document.querySelectorAll(".station-item");
     createScheduler();
-    list.forEach((item, index) => {
-      createDetailScheduler(item.value, schedulerId, index + 1);
-    });
-    window.alert("Tạo lịch chạy xe thành công nhé");
-    navigate("/admin/schedule");
+
+    // window.alert("Tạo lịch chạy xe thành công nhé");
+    // navigate("/admin/schedule");
   };
   return (
     <div>
@@ -80,7 +106,7 @@ function CreateDetailScheduler() {
           </option>
           {stations.map((item, index) => {
             return (
-              <option key={index} value={item.stationId}>
+              <option key={index} value={item.stationId + " " + item.keyWord}>
                 {item.stationName}
               </option>
             );
@@ -95,7 +121,10 @@ function CreateDetailScheduler() {
             </option>
             {stations.map((item, index) => {
               return (
-                <option key={index} value={item.stationId}>
+                <option
+                  key={item.keyWord}
+                  value={item.stationId + " " + item.keyWord}
+                >
                   {item.stationName}
                 </option>
               );
@@ -124,7 +153,7 @@ function CreateDetailScheduler() {
           </option>
           {stations.map((item, index) => {
             return (
-              <option key={index} value={item.stationId}>
+              <option key={index} value={item.stationId + " " + item.keyWord}>
                 {item.stationName}
               </option>
             );

@@ -28,7 +28,12 @@ function CreateScheduler() {
   }, []);
 
   const handleOnChange = (e) => {
-    setScheduler({ ...scheduler, [e.target.name]: e.target.value });
+    setScheduler({
+      ...scheduler,
+      [e.target.name]: e.target.value,
+      [e.target.className.split(" ")[1]]:
+        e.target.options[e.target.selectedIndex].text,
+    });
     console.log(scheduler);
   };
 
@@ -42,9 +47,13 @@ function CreateScheduler() {
         schedulerStart: scheduler.schedulerStart,
         schedulerEnd: scheduler.schedulerEnd,
         vehicleId: scheduler.vehicleId,
+        startAddress: scheduler.startAddress,
+        endAddress: scheduler.endAddress,
+        carNumber: scheduler.carNumber,
       })
     );
     navigate("/admin/schedule/createscheduler/detail");
+    console.log(state);
   };
 
   const handleValidation = () => {
@@ -129,7 +138,7 @@ function CreateScheduler() {
             <select
               name="schedulerStart"
               id="schedulerStart"
-              className="form-select"
+              className="form-select startAddress"
               onChange={(e) => handleOnChange(e)}
             >
               <option selected disabled>
@@ -155,7 +164,7 @@ function CreateScheduler() {
             <select
               name="schedulerEnd"
               id="schedulerEnd"
-              className="form-select"
+              className="form-select endAddress"
               onChange={(e) => handleOnChange(e)}
             >
               <option selected disabled>
@@ -181,7 +190,7 @@ function CreateScheduler() {
             <select
               name="vehicleId"
               id="vehicleId"
-              className="form-select"
+              className="form-select carNumber"
               onChange={(e) => handleOnChange(e)}
             >
               <option selected disabled>

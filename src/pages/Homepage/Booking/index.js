@@ -19,6 +19,7 @@ function Booking() {
   const [stations, setStations] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [toAddress, setToAddress] = useState("");
   const [bookingData, setBookingData] = useState({
     pickupDate: yyyy + "-" + mm + "-" + dd,
   });
@@ -31,6 +32,8 @@ function Booking() {
 
     fetchData();
   }, []);
+
+  console.log(suggestions);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +56,6 @@ function Booking() {
   };
 
   const onSuggestHandler = (item) => {
-    console.log(item);
     setKeyword(item.stationName);
     setBookingData({ ...bookingData, toAddress: item.stationName });
     setSuggestions([]);

@@ -7,6 +7,9 @@ const SchedulerReducer = (state, action) => {
         schedulerStart: data.schedulerStart,
         schedulerEnd: data.schedulerEnd,
         vehicleId: data.vehicleId,
+        startAddress: data.startAddress,
+        endAddress: data.endAddress,
+        carNumber: data.carNumber,
       };
     }
     default: {
