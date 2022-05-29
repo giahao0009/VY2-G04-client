@@ -42,9 +42,9 @@ function CreateDetailScheduler() {
       console.log(response);
       const list = document.querySelectorAll(".station-item");
       list.forEach((item, index) => {
-        console.log(item.value.split(" ")[1]);
         let stationId = item.value.split(" ")[0];
-        let keyword = item.value.split(" ")[1];
+        let keyword = item.options[item.selectedIndex].getAttribute("keyword");
+        console.log(item.options[item.selectedIndex].getAttribute("keyword"));
         createDetailScheduler(
           stationId,
           response.data.schedulerId,
@@ -70,6 +70,7 @@ function CreateDetailScheduler() {
         keyWord: keyWord,
       };
       const response = await schedulerApi.createDetailScheduler(data);
+      console.log(response);
     };
     featch();
   };
@@ -106,8 +107,8 @@ function CreateDetailScheduler() {
           </option>
           {stations.map((item, index) => {
             return (
-              <option key={index} value={item.stationId + " " + item.keyWord}>
-                {item.stationName}
+              <option key={index} value={item.stationId} keyword={item.keyWord}>
+                {item.stationName} {item.keyWord}
               </option>
             );
           })}
@@ -123,9 +124,10 @@ function CreateDetailScheduler() {
               return (
                 <option
                   key={item.keyWord}
-                  value={item.stationId + " " + item.keyWord}
+                  value={item.stationId}
+                  keyword={item.keyWord}
                 >
-                  {item.stationName}
+                  {item.stationName} {item.keyWord}
                 </option>
               );
             })}
@@ -153,8 +155,8 @@ function CreateDetailScheduler() {
           </option>
           {stations.map((item, index) => {
             return (
-              <option key={index} value={item.stationId + " " + item.keyWord}>
-                {item.stationName}
+              <option key={index} value={item.stationId} keyword={item.keyWord}>
+                {item.stationName} {item.keyWord}
               </option>
             );
           })}

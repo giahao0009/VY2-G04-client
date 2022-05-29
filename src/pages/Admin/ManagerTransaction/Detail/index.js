@@ -28,7 +28,7 @@ function DetailTransaction() {
         <input
           className="form-control"
           disabled
-          value={transaction.toAddress}
+          value={transaction.fromAddress}
         />
       </div>
       <div className="mb-3">
@@ -36,7 +36,7 @@ function DetailTransaction() {
         <input
           className="form-control"
           disabled
-          value={transaction.fromAddress}
+          value={transaction.toAddress}
         />
       </div>
       <div className="mb-3">

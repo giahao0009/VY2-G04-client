@@ -45,6 +45,11 @@ class VehicleApi {
     const url = `/vehicle/getallstatus`;
     return axiosClient.get(url);
   };
+
+  countVehicle = (id) => {
+    const url = `/vehicle/countvehicle?companyId=${id}`;
+    return axiosClient.get(url);
+  };
 }
 
 const vehicleApi = new VehicleApi();

@@ -24,6 +24,7 @@ function HandlePayment() {
     const createTransaction = async () => {
       const response = await transactionApi.createTransaction(transaction);
       navigate("/");
+      alert("Đã thanh toán thành công nhé");
     };
     createTransaction();
   }, [transaction]);

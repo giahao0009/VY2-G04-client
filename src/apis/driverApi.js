@@ -25,6 +25,10 @@ class DriverApi {
     const url = `/driver/deleteDriver/${id}`;
     return axiosClient.delete(url);
   };
+  countDriver = (id) => {
+    const url = `/driver/countdriver?companyId=${id}`;
+    return axiosClient.get(url);
+  };
 }
 
 const driverApi = new DriverApi();

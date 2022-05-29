@@ -16,7 +16,7 @@ function ManagerVoucher() {
   return (
     <div>
       <a
-        href="http://128.199.241.206:8081/"
+        href="http://voucher.vovanhoangtuan.xyz/partner/"
         target="_blank"
         className="btn btn-primary mb-3"
       >

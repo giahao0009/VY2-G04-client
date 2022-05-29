@@ -160,7 +160,7 @@ function Vehicle() {
                           </div>
                           <div className="lt">Lịch trình</div>
                           <div>
-                            {item.schedulerStart} &rarr; {item.schedulerEnd}
+                            {item.startAddress} &rarr; {item.endAddress}
                             <b style={{ fontWeight: "700" }}> (50KM)</b>
                           </div>
                           <div>

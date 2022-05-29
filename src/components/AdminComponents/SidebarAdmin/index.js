@@ -114,22 +114,12 @@ function SidebarAdmin() {
           </li>
           <li className="nav-item">
             <CustomLink
-              to="/admin/buses"
+              to="/admin/statistical"
               className="nav-link d-flex alight-items-center"
               aria-current="page"
             >
               <FcStatistics className="icon-sidebarmenu" />
               <span>Thống kê</span>
-            </CustomLink>
-          </li>
-          <li className="nav-item">
-            <CustomLink
-              to="/admin/buses"
-              className="nav-link d-flex alight-items-center"
-              aria-current="page"
-            >
-              <AiOutlineHistory className="icon-sidebarmenu" />
-              <span>Lịch sử giao dịch</span>
             </CustomLink>
           </li>
         </ul>
