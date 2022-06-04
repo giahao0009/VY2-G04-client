@@ -59,6 +59,7 @@ function ManagerTransaction() {
                     </span>
                   )}
                 </td>
+
                 <td>
                   <Link to={`/admin/transaction/detail/${item.transactionId}`}>
                     <button className="btn btn-warning">Chi tiết</button>

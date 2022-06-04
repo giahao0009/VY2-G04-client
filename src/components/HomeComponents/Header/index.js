@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaHandshake } from "react-icons/fa";
 import logo from "../../../images/traveloka_logo.png";
+import { findGetParameter } from "../../../untils";
+import authApi from "../../../apis/authApi";
 
 function Header() {
   const [user, setUser] = useState(null);
+
+  console.log(findGetParameter("token"));
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await authApi.getUser(findGetParameter("token"));
+      console.log(response.data.data);
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
@@ -39,18 +51,14 @@ function Header() {
                 <span>Hợp tác với chúng tôi</span>
               </a>
             </li>
+
             <li>
               {user ? (
                 user.name
               ) : (
-                <p
-                  style={{ display: "inline-block", cursor: "pointer" }}
-                  className="link-login"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalLoginForm"
-                >
-                  Đăng nhập
-                </p>
+                <a href="https://profile.vinhphancommunity.xyz/Login?redirect=http://localhost:3000">
+                  Đăng nhập VY
+                </a>
               )}
             </li>
             <li>

@@ -57,6 +57,19 @@ function CreateDriver() {
               aria-describedby="emailHelp"
             />
           </div>
+          <div className="mb-3">
+            <label htmlFor="stationLocation" className="form-label">
+              Keyword tìm kiếm
+            </label>
+            <input
+              name="keyWord"
+              type="text"
+              className="form-control"
+              id="stationLocation"
+              onChange={(e) => handleOnChange(e)}
+              aria-describedby="emailHelp"
+            />
+          </div>
 
           <button type="submit" className="btn btn-primary">
             Submit

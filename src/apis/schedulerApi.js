@@ -21,6 +21,10 @@ class SchedulerApi {
     const url = `/scheduler/filterscheduler?key=${key}`;
     return axiosClient.get(url);
   };
+  searchScheduler = (carnumber, companyId) => {
+    const url = `/scheduler/search?carnumber=${carnumber}&companyId=${companyId}`;
+    return axiosClient.get(url);
+  };
 }
 
 const schedulerApi = new SchedulerApi();

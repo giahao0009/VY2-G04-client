@@ -25,6 +25,10 @@ class TransactionApi {
     const url = `/transaction/reportmonth?companyId=${id}`;
     return axiosClient.get(url);
   };
+  refundTransaction = (data) => {
+    const url = `/ultils/refund`;
+    return axiosClient.post(url, data);
+  };
 }
 
 const transactionApi = new TransactionApi();

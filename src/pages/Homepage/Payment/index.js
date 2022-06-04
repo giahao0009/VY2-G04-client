@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { BookingContext } from "../../../context/booking/BookingContext";
 import { setBooking } from "../../../context/booking/BookingAction";
 import VietnamIcon from "../../../images/vietnam.png";
 import { useNavigate } from "react-router-dom";
+import voucherApi from "../../../apis/voucherApi";
 
 function Payment() {
   const navigate = useNavigate();
@@ -10,6 +11,22 @@ function Payment() {
   const [cusName, setCusName] = useState("");
   const [cusEmail, setCusEmail] = useState("");
   const [cusPhone, setCusPhone] = useState("");
+  const [vouchers, setVouchers] = useState([]);
+  const [checkCondition, setCheckCondition] = useState({});
+  const [voucherApply, setVoucherApply] = useState("");
+
+  useEffect(() => {
+    const getVouchers = async () => {
+      const response = await voucherApi.getVouchersAvailable(
+        "5678910",
+        "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
+      );
+
+      console.log(response);
+      setVouchers(response.data.data.vouchers);
+    };
+    getVouchers();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,9 +42,30 @@ function Payment() {
         cusPhone: cusPhone,
       })
     );
-    localStorage.setItem("transaction", JSON.stringify(state));
+    console.log(state);
+    await localStorage.setItem("transaction", JSON.stringify(state));
     navigate("/booking/payment-stripe");
   };
+
+  const handleChangeVoucher = (e) => {
+    const checkMyVoucher = async () => {
+      const response = await voucherApi.checkVoucher(
+        { amount: state.numberPeoples * 100000, code: e.target.value },
+        "5678910",
+        "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
+      );
+      dispatch(
+        setBooking({
+          ...state,
+          discount: response.data.data.amount,
+          voucherCode: e.target.value,
+        })
+      );
+    };
+    checkMyVoucher();
+  };
+
+  console.log(checkCondition);
 
   return (
     <div className="payment-wrapper">
@@ -105,6 +143,24 @@ function Payment() {
                         onChange={(e) => setCusEmail(e.target.value)}
                       />
                     </div>
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label">
+                      Danh sách voucher khả dụng{" "}
+                    </label>
+                    <select
+                      className="form-control"
+                      onChange={(e) => handleChangeVoucher(e)}
+                    >
+                      <option>Lựa chọn voucher</option>
+                      {vouchers.map((item, index) => {
+                        return (
+                          <option key={index} value={item.voucherCode}>
+                            {item.title} - {item.Condition.discount} {"%"}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                   <button className="btn btn-primary float-end w-100">
                     Tiếp tục

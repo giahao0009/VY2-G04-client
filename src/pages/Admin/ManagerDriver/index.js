@@ -54,6 +54,21 @@ function ManagerDriver() {
     }
   };
 
+  const handleSearchDriver = async () => {
+    try {
+      if (searchValue.length == 0 || searchValue == null) {
+        fetchData();
+        return;
+      } else {
+        const params = { name: searchValue };
+        const response = await driverApi.searchDriver(params);
+        setDriverList(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       <div
@@ -74,7 +89,7 @@ function ManagerDriver() {
           className="form-control me-2"
           style={{ width: "500px" }}
         />
-        <button type="submit" className="btn btn-success">
+        <button onClick={handleSearchDriver} className="btn btn-success">
           Tìm kiếm
         </button>
       </div>

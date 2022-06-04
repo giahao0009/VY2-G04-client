@@ -13,6 +13,20 @@ function DetailTransaction() {
     };
     featchData();
   }, []);
+
+  const refund = () => {
+    const refundTran = async () => {
+      const response = await transactionApi.refundTransaction({
+        payment_intent: transaction.paymentIntent,
+        transactionId: transaction.transactionId,
+      });
+    };
+    if (window.confirm("Bạn có thực sự muốn hoàn tiền cho giao dịch này ???")) {
+      refundTran();
+    } else {
+      return;
+    }
+  };
   return (
     <div>
       <div className="mb-3">
@@ -79,8 +93,18 @@ function DetailTransaction() {
           value={transaction.transactionStatus}
         />
       </div>
+      <div className="mb-3">
+        <label className="form-label">Mã giao dịch stripe</label>
+        <input
+          className="form-control"
+          disabled
+          value={transaction.paymentIntent}
+        />
+      </div>
       <div className="mb-3 text-end">
-        <button className="btn btn-danger">Hoàn tiền</button>
+        <button className="btn btn-danger" onClick={refund}>
+          Hoàn tiền
+        </button>
       </div>
     </div>
   );

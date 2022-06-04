@@ -10,6 +10,8 @@ const INITIAL_STATE = {
   vehicleId: null,
   bookingStatus: null,
   numberPeoples: null,
+  discount: null,
+  voucherCode: null,
 };
 
 export const BookingContext = createContext(INITIAL_STATE);

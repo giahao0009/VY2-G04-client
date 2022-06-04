@@ -29,6 +29,10 @@ class DriverApi {
     const url = `/driver/countdriver?companyId=${id}`;
     return axiosClient.get(url);
   };
+  searchDriver = (params) => {
+    const url = `/driver/searchdriver?name=${params.name}`;
+    return axiosClient.get(url);
+  };
 }
 
 const driverApi = new DriverApi();

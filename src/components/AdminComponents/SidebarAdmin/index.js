@@ -90,24 +90,13 @@ function SidebarAdmin() {
             </CustomLink>
           </li>
           <li className="nav-item">
-            <CustomLink
-              to="/admin/buses"
+            <a
+              href="http://voucher.votuan.xyz/partner"
               className="nav-link d-flex alight-items-center"
-              aria-current="page"
-            >
-              <AiFillGift className="icon-sidebarmenu" />
-              <span>Quản lý gift</span>
-            </CustomLink>
-          </li>
-          <li className="nav-item">
-            <CustomLink
-              to="/admin/voucher"
-              className="nav-link d-flex alight-items-center"
-              aria-current="page"
             >
               <FaGifts className="icon-sidebarmenu" />
-              <span>Quản lý voucher</span>
-            </CustomLink>
+              <span>Quản lý voucher / gift</span>
+            </a>
           </li>
           <li className="nav-item">
             <hr />
