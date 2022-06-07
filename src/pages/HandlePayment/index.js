@@ -21,7 +21,7 @@ function HandlePayment() {
     try {
       const response = await voucherApi.applyVoucher(
         data,
-        "5678910",
+        localstore.customerId,
         "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
       );
       console.log(response);
@@ -30,7 +30,7 @@ function HandlePayment() {
           typeVoucher: "AIRPORT",
           orderId: response.data.data.orderId,
         },
-        "5678910",
+        localstore.customerId,
         "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
       );
       console.log(statusVoucher);
@@ -45,6 +45,7 @@ function HandlePayment() {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("transaction"));
+    const user = JSON.parse(localStorage.getItem("user"));
     setTransaction({
       customerId: data.user.userId,
       customerName: data.user.name,
@@ -58,11 +59,9 @@ function HandlePayment() {
       discount: data.discount,
       voucherCode: data.voucherCode,
       payment_intent: findGetParameter("payment_intent"),
+      companyId: user.userId,
     });
   }, []);
-
-  console.log(findGetParameter("payment_intent"));
-  console.log(transaction);
 
   useEffect(() => {
     const createTransaction = async () => {
@@ -76,8 +75,12 @@ function HandlePayment() {
         navigate("/");
       } else {
         const response = await transactionApi.createTransaction(transaction);
-        alert("Thanh toán thành công");
-        setTimeout(navigate("/"), 2000);
+        console.log(response);
+
+        setTimeout(() => {
+          alert("Thanh toán thành công");
+          navigate("/");
+        }, 2000);
         return;
       }
     };

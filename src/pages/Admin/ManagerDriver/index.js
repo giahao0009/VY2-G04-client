@@ -16,9 +16,11 @@ function ManagerDriver() {
   });
 
   const fetchData = async () => {
+    const localstore = JSON.parse(localStorage.getItem("user"));
     const params = {
       page: filters.page,
       size: filters.size,
+      companyId: localstore.userId,
     };
     const response = await driverApi.getAllDriverWithPagination(params);
     console.log(response);

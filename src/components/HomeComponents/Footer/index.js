@@ -42,7 +42,12 @@ function Footer() {
                   alt=""
                 />
               </div>
-              <button className="mt-4 button-coop">Hợp tác với VY02G04</button>
+              <a
+                href="https://profile.vinhphancommunity.xyz/partnership"
+                className="mt-4 btn button-coop"
+              >
+                Hợp tác với VY02G04
+              </a>
             </div>
             <div className="col-3">
               <ul className="list-footer">

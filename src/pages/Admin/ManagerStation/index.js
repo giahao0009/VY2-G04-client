@@ -16,9 +16,11 @@ function ManagerStation() {
     size: 10,
   });
   const fetchData = async () => {
+    const localstore = JSON.parse(localStorage.getItem("user"));
     const params = {
       page: filters.page,
       size: filters.size,
+      companyId: localstore.userId,
     };
     const response = await stationApi.getAllStationWithPagination(params);
     console.log(response);

@@ -17,9 +17,10 @@ function Payment() {
 
   useEffect(() => {
     const getVouchers = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
       const response = await voucherApi.getVouchersAvailable(
-        "5678910",
-        "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
+        user.userId,
+        user.userId
       );
 
       console.log(response);

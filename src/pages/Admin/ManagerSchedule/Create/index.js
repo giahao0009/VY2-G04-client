@@ -13,7 +13,9 @@ function CreateScheduler() {
   const [state, dispatch] = useContext(SchedulerContext);
   useEffect(() => {
     const featchVehicles = async () => {
-      const response = await vehicleApi.getAll();
+      const response = await vehicleApi.getVehicleByCompanyId(
+        JSON.parse(localStorage.getItem("user")).userId
+      );
       setVehicles(response.data);
     };
     featchVehicles();
@@ -21,7 +23,9 @@ function CreateScheduler() {
 
   useEffect(() => {
     const featchStations = async () => {
-      const response = await stationApi.getAll();
+      const response = await stationApi.getStationByCompanyId(
+        JSON.parse(localStorage.getItem("user")).userId
+      );
       setStations(response.data);
     };
     featchStations();

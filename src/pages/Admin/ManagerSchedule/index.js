@@ -2,19 +2,34 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import schedulerApi from "../../../apis/schedulerApi";
 import stationApi from "../../../apis/stationApi";
+import ReactPaginate from "react-paginate";
 
 function ManagerSchedule() {
-  const [schedulers, setSchedulers] = useState([]);
+  const [schedulers, setSchedulers] = useState({});
   const [stations, setStations] = useState([]);
   const [searchValue, setSearchValue] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    size: 10,
+  });
+  const [filters, setFilters] = useState({
+    page: 1,
+    size: 10,
+  });
 
   const featchData = async () => {
-    let params = {
-      companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
-    };
-    const response = await schedulerApi.getAllSchedulerByCompanyId(params);
-    console.log(response);
-    setSchedulers(response.data);
+    const localstore = JSON.parse(localStorage.getItem("user"));
+    const response = await schedulerApi.schedulerPagination(
+      filters.page,
+      filters.size,
+      localstore.userId
+    );
+    setSchedulers(response);
+    setPagination({
+      ...pagination,
+      totalRows: response.Total,
+      page: filters.page,
+    });
   };
   useEffect(() => {
     const feacthStations = async () => {
@@ -25,7 +40,14 @@ function ManagerSchedule() {
 
   useEffect(() => {
     featchData();
-  }, []);
+  }, [filters]);
+
+  const handlePageChange = (newPage) => {
+    setFilters({
+      ...filters,
+      page: newPage.selected + 1,
+    });
+  };
 
   const handleSearchScheduler = async () => {
     try {
@@ -79,23 +101,44 @@ function ManagerSchedule() {
             </tr>
           </thead>
           <tbody>
-            {schedulers.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td>{item.carNumber}</td>
-                  <td>{item.startAddress}</td>
-                  <td>{item.endAddress}</td>
-                  <td>
-                    <Link to={"/admin/schedule/detail/" + item.schedulerId}>
-                      <button className="btn btn-warning">Chi tiết</button>
-                    </Link>
-                    <button className="btn btn-danger ms-2">Xoá</button>
-                  </td>
-                </tr>
-              );
-            })}
+            {!schedulers.data
+              ? null
+              : schedulers.data.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{item.carNumber}</td>
+                      <td>{item.startAddress}</td>
+                      <td>{item.endAddress}</td>
+                      <td>
+                        <Link to={"/admin/schedule/detail/" + item.schedulerId}>
+                          <button className="btn btn-warning">Chi tiết</button>
+                        </Link>
+                        <button className="btn btn-danger ms-2">Xoá</button>
+                      </td>
+                    </tr>
+                  );
+                })}
           </tbody>
         </table>
+        <ReactPaginate
+          previousLabel={"Prev"}
+          nextLabel={"Next"}
+          breakLabel={"..."}
+          pageCount={schedulers.Total / filters.size}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={3}
+          containerClassName={"pagination justify-content-center mt-2"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );

@@ -7,7 +7,10 @@ function CreateDriver() {
   const [vehicleList, setVehicleList] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await vehicleApi.getAll();
+      const localstore = JSON.parse(localStorage.getItem("user"));
+      const response = await vehicleApi.getVehicleByCompanyId(
+        localstore.userId
+      );
       console.log(response);
       let list = [];
       response.data.forEach((item) => {
@@ -17,6 +20,7 @@ function CreateDriver() {
           return;
         }
       });
+      console.log(list);
 
       setVehicleList(list);
     };
@@ -37,10 +41,12 @@ function CreateDriver() {
       }
       if (window.confirm("Bạn có muốn tạo thông tin tài xế")) {
         const response = await driverApi.createDriver(driver);
+
         console.log(response);
         const vehicle = await vehicleApi.getVehicleById(
           response.data.vehicleId
         );
+
         console.log(vehicle);
         const vehicleStatus = await vehicleApi.getVehicleStatus();
         console.log(vehicleStatus);
@@ -48,12 +54,12 @@ function CreateDriver() {
           response.data.vehicleId,
           {
             ...vehicle.data,
-            vehicleStatusId: vehicleStatus.data[1].statusId,
+            vehicleStatusId: vehicleStatus.data[0].vehicleStatusId,
           }
         );
         console.log(updateVehicle);
         window.alert("Đã thêm dữ liệu thành công");
-        // window.location.reload();
+        window.location.reload();
       } else {
         return;
       }

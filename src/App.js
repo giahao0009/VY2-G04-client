@@ -6,6 +6,7 @@ import { findGetParameter } from "./untils";
 import authApi from "./apis/authApi";
 import { loginSuccess } from "./context/auth/AuthAction";
 import { AuthContext } from "./context/auth/AuthContext";
+import voucherApi from "./apis/voucherApi";
 
 function App() {
   const { isFetching, dispatch } = useContext(AuthContext);
@@ -15,14 +16,22 @@ function App() {
       if (token != undefined && token.length > 0) {
         const auth = async () => {
           const response = await authApi.getUser(token);
-          console.log(response.data.data);
+
           let user = {
             userId: response.data.data.userId,
             name: response.data.data.name,
             accessToken: token,
             email: response.data.data.email,
+            type: response.data.data.type,
           };
+          const voucherUserId = await voucherApi.createUserVoucher({
+            userId: user.userId,
+            email: user.email,
+          });
+
           dispatch(loginSuccess(user));
+          window.history.replaceState({}, document.title, "/");
+          window.location.reload();
         };
         auth();
       }

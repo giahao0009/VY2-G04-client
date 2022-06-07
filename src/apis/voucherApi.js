@@ -1,8 +1,14 @@
 import axios from "axios";
 
 class VoucherApi {
+  createUserVoucher = (data) => {
+    const url = `https://api.votuan.xyz/api/v1/user/auth/register`;
+    return axios.post(url, data, {
+      headers: { "Content-Type": "application/json" },
+    });
+  };
   getAllVoucher = () => {
-    const url = `http://api.votuan.xyz/api/v1/partner/voucher?type=AIRPORT`;
+    const url = `https://api.votuan.xyz/api/v1/partner/voucher?type=AIRPORT`;
     return axios.get(url, {
       headers: {
         accept: "application/json",
@@ -10,7 +16,7 @@ class VoucherApi {
     });
   };
   getVouchersAvailable = (userId, partnerId) => {
-    const url = `http://api.votuan.xyz/api/v1/user/voucher/eligible?typeVoucher=AIRPORT`;
+    const url = `https://api.votuan.xyz/api/v1/user/voucher/eligible?typeVoucher=AIRPORT`;
     return axios.get(url, {
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -21,7 +27,7 @@ class VoucherApi {
     });
   };
   checkVoucher = (params, userId, partnerId) => {
-    const url = `http://api.votuan.xyz/api/v1/user/voucher/check-condition?amount=${params.amount}&code=${params.code}&typeVoucher=AIRPORT`;
+    const url = `https://api.votuan.xyz/api/v1/user/voucher/check-condition?amount=${params.amount}&code=${params.code}&typeVoucher=AIRPORT`;
     return axios.get(url, {
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +37,7 @@ class VoucherApi {
     });
   };
   applyVoucher = (data, userId, partnerId) => {
-    const url = `http://api.votuan.xyz/api/v1/user/voucher/pre-order`;
+    const url = `https://api.votuan.xyz/api/v1/user/voucher/pre-order`;
     return axios.post(url, data, {
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +47,7 @@ class VoucherApi {
     });
   };
   statusVoucher = (data, userId, partnerId) => {
-    const url = `http://api.votuan.xyz/api/v1/user/voucher/state`;
+    const url = `https://api.votuan.xyz/api/v1/user/voucher/state`;
     return axios.put(url, data, {
       headers: {
         "Content-Type": "application/json",

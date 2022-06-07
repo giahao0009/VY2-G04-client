@@ -3,9 +3,21 @@ import vehicleApi from "../../../../apis/vehicleApi";
 
 function CreateCar() {
   const [vehicle, setVehicle] = useState({});
+  const [status, setStatus] = useState([]);
+  const [types, setTypes] = useState([]);
   useEffect(() => {
-    const fetchData = () => {};
+    const fetchStatus = async () => {
+      const response = await vehicleApi.getVehicleStatus();
+      setStatus(response.data);
+    };
+    const fetchType = async () => {
+      const response = await vehicleApi.getTypeVehicle();
+      setTypes(response.data);
+    };
+    fetchStatus();
+    fetchType();
   }, []);
+
   const createCar = async (e) => {
     e.preventDefault();
     console.log(handleValidation());
@@ -28,7 +40,7 @@ function CreateCar() {
     setVehicle({
       ...vehicle,
       [e.target.name]: e.target.value,
-      companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+      companyId: JSON.parse(localStorage.getItem("user")).userId,
     });
   };
   const handleValidation = () => {
@@ -184,12 +196,11 @@ function CreateCar() {
               <option selected disabled>
                 Tình trạng xe
               </option>
-              <option value="7f709dde-3090-4665-8010-b4de0da3ac22">
-                Bình thường
-              </option>
-              <option value="7f709dde-3090-4665-8010-b4de0da3ac23">
-                Chưa có người lái
-              </option>
+              {status.map((item, index) => (
+                <option key={index} value={item.vehicleStatusId}>
+                  {item.vehicleStatusName}
+                </option>
+              ))}
             </select>
             <span
               className="error-message-vehicleStatusId"
@@ -229,32 +240,11 @@ function CreateCar() {
               <option selected value="1" disabled>
                 Lựa chọn loại xe
               </option>
-              <option value="7f709dde-3090-4665-8010-b4de0da3ac20">Bus</option>
-              <option value="7f709dde-3090-4665-8010-b4de0da3ac21">
-                Tàu hoả
-              </option>
-            </select>
-            <span
-              className="error-message-vehicleTypeId"
-              style={{ display: "none" }}
-            ></span>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="vehicleTypeId" className="form-label">
-              Lựa chọn keyword chuyến đi
-            </label>
-            <select
-              name="vehicleTypeId"
-              id="vehicleTypeId"
-              className="form-select"
-              aria-label="Default select example"
-              onChange={(e) => handleOnChange(e)}
-              defaultValue={"1"}
-            >
-              <option selected value="1" disabled>
-                Keyword
-              </option>
+              {types.map((item, index) => (
+                <option key={index} value={item.vehicleTypeId}>
+                  {item.vehicleTypeName}
+                </option>
+              ))}
             </select>
             <span
               className="error-message-vehicleTypeId"

@@ -121,7 +121,7 @@ function RequireAuth({ children }) {
 function RequireAuthAdmin({ children }) {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  if (!JSON.parse(localStorage.getItem("user"))) {
+  if (user.type !== "PARTNER") {
     window.alert("Hãy đăng nhập tài khoản của patner để vào trang quản lý !!!");
     return <Navigate to="/" replace />;
   }

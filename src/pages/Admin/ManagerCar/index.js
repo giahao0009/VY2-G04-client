@@ -17,10 +17,11 @@ function ManagerCar() {
   });
 
   const fetchData = async () => {
+    const localstore = JSON.parse(localStorage.getItem("user"));
     const params = {
       page: filters.page,
       size: filters.size,
-      companyid: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+      companyId: localstore.userId,
     };
     const response = await vehicleApi.getVehicleWithPagination(params);
 
@@ -103,7 +104,6 @@ function ManagerCar() {
           <tr>
             <th scope="col">Biển số</th>
             <th scope="col">Số chổ ngồi</th>
-            <th scope="col">Keyword</th>
             <th scope="col">Loại xe</th>
             <th scope="col">Tình trạng</th>
           </tr>
@@ -116,7 +116,6 @@ function ManagerCar() {
                   <tr>
                     <th scope="row">{item.vehicleNumber}</th>
                     <td> {item.vehicleSeatNumber}</td>
-                    <td>{item.keyRelation}</td>
                     <td>
                       {item.vehicleTypeId.trim() == "1" ? (
                         <span>Bus</span>

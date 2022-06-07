@@ -46,8 +46,18 @@ class VehicleApi {
     return axiosClient.get(url);
   };
 
+  getTypeVehicle = () => {
+    const url = `/vehicle/getalltype`;
+    return axiosClient.get(url);
+  };
+
   countVehicle = (id) => {
     const url = `/vehicle/countvehicle?companyId=${id}`;
+    return axiosClient.get(url);
+  };
+
+  getVehicleByCompanyId = (companyId) => {
+    const url = `/vehicle/getVehicleByCompanyId?companyId=${companyId}`;
     return axiosClient.get(url);
   };
 }

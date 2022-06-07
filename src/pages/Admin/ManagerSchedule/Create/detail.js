@@ -18,7 +18,9 @@ function CreateDetailScheduler() {
   }, []);
   useEffect(() => {
     const featchStations = async () => {
-      const response = await stationApi.getAll();
+      const response = await stationApi.getStationByCompanyId(
+        JSON.parse(localStorage.getItem("user")).userId
+      );
       setStations(response.data);
     };
     featchStations();
@@ -36,7 +38,7 @@ function CreateDetailScheduler() {
         endAddress: state.endAddress,
         carNumber: state.carNumber,
         vehicleId: state.vehicleId,
-        companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+        companyId: JSON.parse(localStorage.getItem("user")).userId,
       };
       const response = await schedulerApi.createScheduler(data);
       console.log(response);
@@ -44,7 +46,7 @@ function CreateDetailScheduler() {
       list.forEach((item, index) => {
         let stationId = item.value.split(" ")[0];
         let keyword = item.options[item.selectedIndex].getAttribute("keyword");
-        console.log(item.options[item.selectedIndex].getAttribute("keyword"));
+        console.log(keyword, stationId, index + 1, response.data.schedulerId);
         createDetailScheduler(
           stationId,
           response.data.schedulerId,
@@ -56,23 +58,20 @@ function CreateDetailScheduler() {
     featch();
   };
 
-  const createDetailScheduler = (
+  const createDetailScheduler = async (
     stationId,
     schedulerId,
     indexDetail,
     keyWord
   ) => {
-    const featch = async () => {
-      let data = {
-        stationId: stationId,
-        schedulerId: schedulerId,
-        indexDetail: indexDetail,
-        keyWord: keyWord,
-      };
-      const response = await schedulerApi.createDetailScheduler(data);
-      console.log(response);
+    let data = {
+      stationId: stationId,
+      schedulerId: schedulerId,
+      indexDetail: indexDetail,
+      keyWord: keyWord,
     };
-    featch();
+    const response = await schedulerApi.createDetailScheduler(data);
+    console.log(response);
   };
 
   const addStation = () => {
@@ -88,8 +87,10 @@ function CreateDetailScheduler() {
   const handleSubmit = () => {
     createScheduler();
 
-    // window.alert("Tạo lịch chạy xe thành công nhé");
-    // navigate("/admin/schedule");
+    setTimeout(() => {
+      window.alert("Tạo lịch chạy xe thành công nhé");
+      navigate("/admin/schedule");
+    }, 2000);
   };
   return (
     <div>
@@ -123,7 +124,7 @@ function CreateDetailScheduler() {
             {stations.map((item, index) => {
               return (
                 <option
-                  key={item.keyWord}
+                  key={index}
                   value={item.stationId}
                   keyword={item.keyWord}
                 >

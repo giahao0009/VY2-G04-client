@@ -29,6 +29,10 @@ class TransactionApi {
     const url = `/ultils/refund`;
     return axiosClient.post(url, data);
   };
+  transactionPagination = (page, size, companyId) => {
+    const url = `/transaction/getwithpagination?page=${page}&size=${size}&companyId=${companyId}`;
+    return axiosClient.get(url);
+  };
 }
 
 const transactionApi = new TransactionApi();

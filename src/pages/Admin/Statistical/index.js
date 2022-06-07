@@ -27,13 +27,14 @@ function Statistical() {
   });
 
   const fetchData = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
     const params = {
       page: filters.page,
       size: filters.size,
-      companyid: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+      companyId: user.userId,
     };
     const response = await vehicleApi.getVehicleWithPagination(params);
-
+    console.log(response);
     setVehicleList(response);
     setPagination({
       ...pagination,
@@ -129,9 +130,9 @@ function Statistical() {
 
   useEffect(() => {
     const featchData = async () => {
-      const response = await transactionApi.getTransaction(
-        "c85665e5-0b00-4adc-8597-db5d6ad3a85e"
-      );
+      const user = JSON.parse(localStorage.getItem("user"));
+      const response = await transactionApi.getTransaction(user.userId);
+      console.log(response);
       let list = response.data;
       list.sort((a, b) => {
         return b.pickupDate.localeCompare(a.pickupDate);
@@ -143,9 +144,8 @@ function Statistical() {
 
   useEffect(() => {
     const featchData = async () => {
-      const response = await transactionApi.reportTransaction(
-        "c85665e5-0b00-4adc-8597-db5d6ad3a85e"
-      );
+      const user = JSON.parse(localStorage.getItem("user"));
+      const response = await transactionApi.reportTransaction(user.userId);
       setReport(response.data);
     };
     featchData();
@@ -202,7 +202,6 @@ function Statistical() {
               </thead>
               <tbody>
                 {transactions.map((item, index) => {
-                  console.log(item);
                   if (index < 10) {
                     return (
                       <tr key={index}>

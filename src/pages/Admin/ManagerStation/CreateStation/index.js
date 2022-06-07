@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import stationApi from "../../../../apis/stationApi";
 
 function CreateDriver() {
-  const [station, setStation] = useState({});
+  const [station, setStation] = useState({
+    keyWord: parseInt(Date.now() * Math.random()).toString(),
+  });
 
   const handleOnChange = (e) => {
     setStation({
       ...station,
       [e.target.name]: e.target.value,
-      companyId: "c85665e5-0b00-4adc-8597-db5d6ad3a85e",
+      companyId: JSON.parse(localStorage.getItem("user")).userId,
     });
   };
 
@@ -17,6 +19,7 @@ function CreateDriver() {
     try {
       if (window.confirm("Bạn có muốn tạo thông tin địa điểm")) {
         const response = await stationApi.createStation(station);
+        console.log(response);
         window.alert("Đã thêm dữ liệu thành công");
         window.location.reload();
       } else {
@@ -50,19 +53,6 @@ function CreateDriver() {
             </label>
             <input
               name="stationLocation"
-              type="text"
-              className="form-control"
-              id="stationLocation"
-              onChange={(e) => handleOnChange(e)}
-              aria-describedby="emailHelp"
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="stationLocation" className="form-label">
-              Keyword tìm kiếm
-            </label>
-            <input
-              name="keyWord"
               type="text"
               className="form-control"
               id="stationLocation"

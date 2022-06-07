@@ -28,6 +28,8 @@ function Header() {
 
   const logout = () => {
     localStorage.clear();
+    window.history.replaceState({}, document.title, "/");
+
     window.location.reload();
   };
 
@@ -46,7 +48,7 @@ function Header() {
               <Link to="/booking">Đặt xe</Link>
             </li>
             <li>
-              <a href="#">
+              <a href="https://profile.vinhphancommunity.xyz/partnership">
                 <FaHandshake />
                 <span>Hợp tác với chúng tôi</span>
               </a>
@@ -54,10 +56,39 @@ function Header() {
 
             <li>
               {user ? (
-                user.name
+                <div className="dropdown" style={{ display: "inline-block" }}>
+                  <p
+                    className="dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {user.name}
+                  </p>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton1"
+                  >
+                    <li>
+                      <a
+                        className="dropdown-item"
+                        href="https://profile.vinhphancommunity.xyz/profile/view"
+                        target="_blank"
+                      >
+                        Thông tin tài khoản
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        Giao dịch
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               ) : (
                 <a href="https://profile.vinhphancommunity.xyz/Login?redirect=http://localhost:3000">
-                  Đăng nhập VY
+                  Đăng nhập
                 </a>
               )}
             </li>
@@ -67,13 +98,12 @@ function Header() {
                   Đăng xuất
                 </button>
               ) : (
-                <button
+                <a
+                  href="https://profile.vinhphancommunity.xyz/signup"
                   className="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalRegisterForm"
                 >
                   Đăng ký
-                </button>
+                </a>
               )}
             </li>
           </ul>

@@ -10,7 +10,7 @@ class SchedulerApi {
     return axiosClient.post(url, data);
   };
   createDetailScheduler = (data) => {
-    const url = `/scheduler/createdetailscheduler`;
+    const url = `/schedulerdetail/createschedulerdetail`;
     return axiosClient.post(url, data);
   };
   getDetailScheduler = (id) => {
@@ -23,6 +23,10 @@ class SchedulerApi {
   };
   searchScheduler = (carnumber, companyId) => {
     const url = `/scheduler/search?carnumber=${carnumber}&companyId=${companyId}`;
+    return axiosClient.get(url);
+  };
+  schedulerPagination = (page, size, companyId) => {
+    const url = `/scheduler/getwithpagination?page=${page}&size=${size}&companyId=${companyId}`;
     return axiosClient.get(url);
   };
 }

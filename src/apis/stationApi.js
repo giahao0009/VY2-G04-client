@@ -25,6 +25,10 @@ class StationApi {
     const url = `/station/getstationbyname?stationName=${name}`;
     return axiosClient.get(url);
   };
+  getStationByCompanyId = (companyId) => {
+    const url = `/station/getallstationbycompanyid?companyId=${companyId}`;
+    return axiosClient.get(url);
+  };
 }
 
 const stationApi = new StationApi();
