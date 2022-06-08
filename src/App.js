@@ -24,10 +24,10 @@ function App() {
             email: response.data.data.email,
             type: response.data.data.type,
           };
-          const voucherUserId = await voucherApi.createUserVoucher({
-            userId: user.userId,
-            email: user.email,
-          });
+          // const voucherUserId = await voucherApi.createUserVoucher({
+          //   userId: user.userId,
+          //   email: user.email,
+          // });
 
           dispatch(loginSuccess(user));
           window.history.replaceState({}, document.title, "/");

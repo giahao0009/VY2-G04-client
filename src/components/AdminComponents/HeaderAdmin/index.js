@@ -1,7 +1,12 @@
 import React from "react";
-import logo from "../../../images/traveloka_logo.png";
+import { useNavigate } from "react-router-dom";
 
 function HeaderAdmin() {
+  let navigate = useNavigate();
+  const signOut = () => {
+    localStorage.clear();
+    navigate("/");
+  };
   return (
     <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
       <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"></a>
@@ -16,17 +21,12 @@ function HeaderAdmin() {
       >
         <span className="navbar-toggler-icon"></span>
       </button>
-      <input
-        className="form-control form-control-dark w-100"
-        type="text"
-        placeholder="Search"
-        aria-label="Search"
-      />
+
       <div className="navbar-nav">
         <div className="nav-item text-nowrap">
-          <a className="nav-link px-3" href="#">
+          <p className="nav-link px-3" onClick={signOut}>
             Sign out
-          </a>
+          </p>
         </div>
       </div>
     </header>

@@ -22,6 +22,7 @@ function ModalDetailBooking(props) {
         numberPeoples: numberPeoples,
         totalCost: totalCost,
         customerId: state.user.userId,
+        companyId: props.modalData.companyId,
       })
     );
     navigate("payment");

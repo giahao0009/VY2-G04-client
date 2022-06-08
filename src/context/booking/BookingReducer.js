@@ -15,6 +15,7 @@ const BookingReducer = (state, action) => {
         time: data.time,
         discount: data.discount,
         voucherCode: data.voucherCode,
+        companyId: data.companyId,
       };
     }
     default: {

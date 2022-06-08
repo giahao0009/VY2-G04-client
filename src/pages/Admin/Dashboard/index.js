@@ -22,9 +22,8 @@ function Dashboard() {
 
   useEffect(() => {
     const featchData = async () => {
-      const response = await driverApi.countDriver(
-        "c85665e5-0b00-4adc-8597-db5d6ad3a85e"
-      );
+      const localstore = JSON.parse(localStorage.getItem("user"));
+      const response = await driverApi.countDriver(localstore.userId);
       setCountDriver(response.data);
     };
     featchData();
@@ -32,9 +31,8 @@ function Dashboard() {
 
   useEffect(() => {
     const featchData = async () => {
-      const response = await transactionApi.countTransaction(
-        "c85665e5-0b00-4adc-8597-db5d6ad3a85e"
-      );
+      const localstore = JSON.parse(localStorage.getItem("user"));
+      const response = await transactionApi.countTransaction(localstore.userId);
       setCountTransaction(response.data);
     };
     featchData();
@@ -42,9 +40,8 @@ function Dashboard() {
 
   useEffect(() => {
     const featchData = async () => {
-      const response = await vehicleApi.countVehicle(
-        "c85665e5-0b00-4adc-8597-db5d6ad3a85e"
-      );
+      const localstore = JSON.parse(localStorage.getItem("user"));
+      const response = await vehicleApi.countVehicle(localstore.userId);
       setCountVehicle(response.data);
     };
     featchData();
@@ -52,9 +49,8 @@ function Dashboard() {
 
   useEffect(() => {
     const featchData = async () => {
-      const response = await transactionApi.sumTransaction(
-        "c85665e5-0b00-4adc-8597-db5d6ad3a85e"
-      );
+      const localstore = JSON.parse(localStorage.getItem("user"));
+      const response = await transactionApi.sumTransaction(localstore.userId);
       setSumTransaction(response.data);
     };
     featchData();
@@ -62,8 +58,9 @@ function Dashboard() {
 
   useEffect(() => {
     const featchData = async () => {
+      const localstore = JSON.parse(localStorage.getItem("user"));
       const response = await transactionApi.reportTransaction(
-        "c85665e5-0b00-4adc-8597-db5d6ad3a85e"
+        localstore.userId
       );
       setReport(response.data);
     };

@@ -42,6 +42,8 @@ function Vehicle() {
     };
   }, []);
 
+  console.log(schedulers);
+
   return (
     <div className="booking-vehicle-wrapper">
       <div className="booking-vehicle-header">

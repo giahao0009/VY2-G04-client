@@ -12,6 +12,7 @@ const INITIAL_STATE = {
   numberPeoples: null,
   discount: null,
   voucherCode: null,
+  companyId: null,
 };
 
 export const BookingContext = createContext(INITIAL_STATE);
