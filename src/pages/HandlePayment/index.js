@@ -3,6 +3,7 @@ import transactionApi from "../../apis/transactionApi";
 import { useNavigate } from "react-router-dom";
 import voucherApi from "../../apis/voucherApi";
 import { findGetParameter } from "../../untils";
+import authApi from "../../apis/authApi";
 
 function HandlePayment() {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ function HandlePayment() {
       discount: data.discount,
       voucherCode: data.voucherCode,
       payment_intent: findGetParameter("payment_intent"),
-      companyId: user.userId,
+      companyId: data.companyId,
     });
   }, []);
 
@@ -76,7 +77,24 @@ function HandlePayment() {
       } else {
         const response = await transactionApi.createTransaction(transaction);
         console.log(response);
-
+        let order = {
+          total: 1,
+          reward: 100,
+          details: [
+            {
+              productName: "Đặt xe đưa đón sân bay",
+              quantity: transaction.numberPeoples,
+              price: 100000,
+              thumbnail: "string",
+              link: "http://localhost:3000/",
+            },
+          ],
+          voucherCode: "Free",
+          partnerId: transaction.companyId,
+          userId: transaction.customerId,
+        };
+        const saveOrders = await authApi.saveOrders(order);
+        console.log(saveOrders);
         setTimeout(() => {
           alert("Thanh toán thành công");
           navigate("/");

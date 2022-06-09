@@ -20,7 +20,7 @@ function Payment() {
       const user = JSON.parse(localStorage.getItem("user"));
       const response = await voucherApi.getVouchersAvailable(
         user.userId,
-        user.userId
+        state.companyId
       );
 
       console.log(response);
@@ -50,10 +50,11 @@ function Payment() {
 
   const handleChangeVoucher = (e) => {
     const checkMyVoucher = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
       const response = await voucherApi.checkVoucher(
         { amount: state.numberPeoples * 100000, code: e.target.value },
-        "5678910",
-        "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
+        user.userId,
+        state.companyId
       );
       dispatch(
         setBooking({
@@ -154,13 +155,15 @@ function Payment() {
                       onChange={(e) => handleChangeVoucher(e)}
                     >
                       <option>Lựa chọn voucher</option>
-                      {vouchers.map((item, index) => {
-                        return (
-                          <option key={index} value={item.voucherCode}>
-                            {item.title} - {item.Condition.discount} {"%"}
-                          </option>
-                        );
-                      })}
+                      {!vouchers
+                        ? null
+                        : vouchers.map((item, index) => {
+                            return (
+                              <option key={index} value={item.voucherCode}>
+                                {item.title}
+                              </option>
+                            );
+                          })}
                     </select>
                   </div>
                   <button className="btn btn-primary float-end w-100">
@@ -180,6 +183,7 @@ function Payment() {
                 <p>Số lượng người đi: {state.numberPeoples}</p>
                 <p>Ngày đặt: {state.pickupDate}</p>
                 <p>Giờ đặt: {state.time}</p>
+                <p>Mã số hãng xe: {state.companyId}</p>
               </div>
             </div>
           </div>

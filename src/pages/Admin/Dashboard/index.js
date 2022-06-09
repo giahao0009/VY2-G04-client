@@ -24,7 +24,8 @@ function Dashboard() {
     const featchData = async () => {
       const localstore = JSON.parse(localStorage.getItem("user"));
       const response = await driverApi.countDriver(localstore.userId);
-      setCountDriver(response.data);
+      console.log(response);
+      setCountDriver(response.data[0].total);
     };
     featchData();
   }, []);
