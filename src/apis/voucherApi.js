@@ -1,12 +1,6 @@
 import axios from "axios";
 
 class VoucherApi {
-  createUserVoucher = (data) => {
-    const url = `https://api.votuan.xyz/api/v1/user/auth/register`;
-    return axios.post(url, data, {
-      headers: { "Content-Type": "application/json" },
-    });
-  };
   getAllVoucher = () => {
     const url = `https://api.votuan.xyz/api/v1/partner/voucher?type=AIRPORT`;
     return axios.get(url, {

@@ -16,6 +16,7 @@ const BookingReducer = (state, action) => {
         discount: data.discount,
         voucherCode: data.voucherCode,
         companyId: data.companyId,
+        giftCode: data.giftCode,
       };
     }
     default: {

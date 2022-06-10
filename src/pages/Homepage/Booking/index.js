@@ -19,7 +19,7 @@ function Booking() {
   const [stations, setStations] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [toAddress, setToAddress] = useState("");
+  const [change, setChange] = useState(false);
   const [bookingData, setBookingData] = useState({
     pickupDate: yyyy + "-" + mm + "-" + dd,
   });
@@ -33,15 +33,19 @@ function Booking() {
     fetchData();
   }, []);
 
-  console.log(suggestions);
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    let fromAddress =
+      change == false
+        ? "Sân bay quốc tế Tân Sơn Nhất"
+        : bookingData.fromAddress;
+    let toAddress =
+      change == true ? "Sân bay quốc tế Tân Sơn Nhất" : bookingData.toAddress;
     if (handleValidation()) {
       dispatch(
         setBooking({
-          fromAddress: "Sân bay quốc tế Tân Sơn Nhất",
-          toAddress: bookingData.toAddress,
+          fromAddress: fromAddress,
+          toAddress: toAddress,
           pickupDate: bookingData.pickupDate,
           time: bookingData.time,
         })
@@ -73,6 +77,7 @@ function Booking() {
     setSuggestions(matches);
     setKeyword(keyword);
     setBookingData({ ...bookingData, [e.target.name]: keyword });
+    console.log(bookingData);
   };
 
   const handleValidation = () => {
@@ -106,52 +111,111 @@ function Booking() {
         <div className="booking-search">
           <div className="booking-search-wrapper">
             <div className="booking-search-tab">
-              <span className="active">Tìm xe đón ở sân bay</span>
-              <span>Tìm xe đi sân bay</span>
+              <span
+                className={change == false ? "active" : ""}
+                onClick={() => setChange(false)}
+              >
+                Tìm xe đón ở sân bay
+              </span>
+              <span
+                className={change == true ? "active" : ""}
+                onClick={() => {
+                  setChange(true);
+                }}
+              >
+                Tìm xe đi sân bay
+              </span>
             </div>
             <form
               className="booking-search-form"
               onSubmit={(e) => handleSubmit(e)}
             >
-              <div className="form-search-group">
-                <FaPlaneArrival className="input-icon" />
-                <input
-                  name="fromAddress"
-                  value="Sân bay quốc tế Tân Sơn Nhất"
-                  onChange={(e) => handleOnChange(e)}
-                  disabled
-                />
-              </div>
-              <div className="form-search-group">
-                <ImLocation2 className="input-icon" />
-                <input
-                  name="toAddress"
-                  type="text"
-                  placeholder="Lựa chọn điểm đến"
-                  onChange={(e) => handleOnChangeKeyword(e)}
-                  value={keyword}
-                  onBlur={() => {
-                    setTimeout(() => {
-                      setSuggestions([]);
-                    }, 1000);
-                  }}
-                />
-                {suggestions.length > 0 && (
-                  <div className="suggestions-box">
-                    {suggestions.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="suggestion"
-                          onClick={() => onSuggestHandler(item)}
-                        >
-                          {item.stationName}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+              {change == true ? (
+                <div className="form-search-group">
+                  <ImLocation2 className="input-icon" />
+                  <input
+                    name="fromAddress"
+                    type="text"
+                    placeholder="Lựa chọn điểm xuất phát"
+                    onChange={(e) => handleOnChangeKeyword(e)}
+                    value={keyword}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setSuggestions([]);
+                      }, 1000);
+                    }}
+                  />
+                  {suggestions.length > 0 && (
+                    <div className="suggestions-box">
+                      {suggestions.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="suggestion"
+                            onClick={() => onSuggestHandler(item)}
+                          >
+                            {item.stationName}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="form-search-group">
+                  <FaPlaneArrival className="input-icon" />
+                  <input
+                    name="fromAddress"
+                    value="Sân bay quốc tế Tân Sơn Nhất"
+                    onChange={(e) => handleOnChange(e)}
+                    disabled
+                  />
+                </div>
+              )}
+
+              {change == false ? (
+                <div className="form-search-group">
+                  <ImLocation2 className="input-icon" />
+                  <input
+                    name="toAddress"
+                    type="text"
+                    placeholder="Lựa chọn điểm đến"
+                    onChange={(e) => handleOnChangeKeyword(e)}
+                    value={keyword}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setSuggestions([]);
+                      }, 1000);
+                    }}
+                  />
+                  {suggestions.length > 0 && (
+                    <div className="suggestions-box">
+                      {suggestions.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="suggestion"
+                            onClick={() => onSuggestHandler(item)}
+                          >
+                            {item.stationName}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="form-search-group">
+                  <FaPlaneArrival className="input-icon" />
+                  <input
+                    name="toAddress"
+                    value="Sân bay quốc tế Tân Sơn Nhất"
+                    onChange={(e) => handleOnChange(e)}
+                    disabled
+                  />
+                </div>
+              )}
+
               <div className="form-search-group">
                 <input
                   name="pickupDate"

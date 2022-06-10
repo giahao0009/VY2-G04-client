@@ -70,11 +70,17 @@ function Header() {
                     className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton1"
                   >
+                    {user.type == "PARTNER" ? (
+                      <li>
+                        <Link className="dropdown-item" to="/admin">
+                          Dashboard
+                        </Link>
+                      </li>
+                    ) : null}
                     <li>
                       <a
                         className="dropdown-item"
                         href="https://profile.vinhphancommunity.xyz/profile/view"
-                        target="_blank"
                       >
                         Thông tin tài khoản
                       </a>
@@ -82,6 +88,14 @@ function Header() {
                     <li>
                       <a className="dropdown-item" href="#">
                         Giao dịch
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        className="dropdown-item"
+                        href="https://voucher.votuan.xyz/user/bonus/AIRPORT"
+                      >
+                        Đổi điểm thưởng
                       </a>
                     </li>
                   </ul>

@@ -82,7 +82,7 @@ function DetailTransaction() {
         <input
           className="form-control"
           disabled
-          value={transaction.totalCost}
+          value={transaction.totalCost - transaction.discount}
         />
       </div>
       <div className="mb-3">

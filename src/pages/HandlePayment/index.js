@@ -4,11 +4,36 @@ import { useNavigate } from "react-router-dom";
 import voucherApi from "../../apis/voucherApi";
 import { findGetParameter } from "../../untils";
 import authApi from "../../apis/authApi";
+import giftApi from "../../apis/giftApi";
 
 function HandlePayment() {
   const navigate = useNavigate();
   const [transaction, setTransaction] = useState({});
-  const [checkTransaction, setCheckTransaction] = useState(false);
+  const [disc, setDisc] = useState(0);
+
+  const applyGift = async () => {
+    let localstore = JSON.parse(localStorage.getItem("transaction"));
+    let data = {
+      code: localstore.giftCode,
+      typeVoucher: "AIRPORT",
+      transactionId: parseInt(Date.now() * Math.random()).toString(),
+      amount: 100000 * parseInt(localstore.numberPeoples),
+    };
+    try {
+      const response = await giftApi.applyGift(
+        data,
+        localstore.customerId,
+        localstore.companyId
+      );
+      console.log(response);
+      setDisc(response.data.data.amountAfter);
+    } catch (error) {
+      alert(
+        "Thanh toán không thành công do có giao dịch khác đã áp dụng mã, hãy thử lại nhé"
+      );
+      navigate("/");
+    }
+  };
 
   const applyVoucher = async () => {
     let localstore = JSON.parse(localStorage.getItem("transaction"));
@@ -18,30 +43,42 @@ function HandlePayment() {
       transactionId: parseInt(Date.now() * Math.random()).toString(),
       amount: 100000 * parseInt(localstore.numberPeoples),
     };
-    console.log(data);
     try {
       const response = await voucherApi.applyVoucher(
         data,
         localstore.customerId,
-        "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
+        localstore.companyId
       );
       console.log(response);
-      const statusVoucher = await voucherApi.statusVoucher(
-        {
-          typeVoucher: "AIRPORT",
-          orderId: response.data.data.orderId,
-        },
-        localstore.customerId,
-        "22d9a52f-ab67-4b63-b5ac-b55a357b0057"
-      );
-      console.log(statusVoucher);
-      setCheckTransaction(true);
+      const dis = disc - response.data.data.amount;
+      setDisc(dis);
     } catch (err) {
       alert(
         "Thanh toán không thành công do có giao dịch khác đã áp dụng mã, hãy thử lại nhé"
       );
       navigate("/");
     }
+  };
+
+  const saveOrder = async () => {
+    let order = {
+      total: 1,
+      reward: 100,
+      details: [
+        {
+          productName: `Đặt xe đưa đón sân bay`,
+          quantity: transaction.numberPeoples,
+          price: disc,
+          thumbnail: "string",
+          link: "http://localhost:3000/",
+        },
+      ],
+      voucherCode: "Free",
+      partnerId: transaction.companyId,
+      userId: transaction.customerId,
+    };
+    const saveOrders = await authApi.saveOrders(order);
+    console.log(saveOrders);
   };
 
   useEffect(() => {
@@ -61,46 +98,38 @@ function HandlePayment() {
       voucherCode: data.voucherCode,
       payment_intent: findGetParameter("payment_intent"),
       companyId: data.companyId,
+      giftCode: data.giftCode,
     });
   }, []);
 
   useEffect(() => {
     const createTransaction = async () => {
+      let localstore = JSON.parse(localStorage.getItem("transaction"));
+
+      console.log(localstore);
       if (
-        transaction.voucherCode &&
-        transaction.voucherCode !== undefined &&
-        transaction.voucherCode.length > 0
+        localstore.voucherCode &&
+        localstore.voucherCode !== undefined &&
+        localstore.voucherCode.length > 0
       ) {
         applyVoucher();
-        const response = await transactionApi.createTransaction(transaction);
-        navigate("/");
-      } else {
-        const response = await transactionApi.createTransaction(transaction);
-        console.log(response);
-        let order = {
-          total: 1,
-          reward: 100,
-          details: [
-            {
-              productName: "Đặt xe đưa đón sân bay",
-              quantity: transaction.numberPeoples,
-              price: 100000,
-              thumbnail: "string",
-              link: "http://localhost:3000/",
-            },
-          ],
-          voucherCode: "Free",
-          partnerId: transaction.companyId,
-          userId: transaction.customerId,
-        };
-        const saveOrders = await authApi.saveOrders(order);
-        console.log(saveOrders);
-        setTimeout(() => {
-          alert("Thanh toán thành công");
-          navigate("/");
-        }, 2000);
-        return;
       }
+
+      if (
+        localstore.giftCode &&
+        localstore.giftCode !== undefined &&
+        localstore.giftCode.length > 0
+      ) {
+        applyGift();
+      }
+
+      const response = await transactionApi.createTransaction(transaction);
+      saveOrder();
+      setTimeout(() => {
+        alert("Thanh toán thành công");
+        navigate("/");
+      }, 1000);
+      return;
     };
     createTransaction();
   }, [transaction]);

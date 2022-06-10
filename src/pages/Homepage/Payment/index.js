@@ -4,6 +4,7 @@ import { setBooking } from "../../../context/booking/BookingAction";
 import VietnamIcon from "../../../images/vietnam.png";
 import { useNavigate } from "react-router-dom";
 import voucherApi from "../../../apis/voucherApi";
+import giftApi from "../../../apis/giftApi";
 
 function Payment() {
   const navigate = useNavigate();
@@ -13,7 +14,10 @@ function Payment() {
   const [cusPhone, setCusPhone] = useState("");
   const [vouchers, setVouchers] = useState([]);
   const [checkCondition, setCheckCondition] = useState({});
-  const [voucherApply, setVoucherApply] = useState("");
+  const [gifts, setGifts] = useState([]);
+  const [discountGifts, setDiscountGifts] = useState(0);
+  const [discountVoucher, setDiscountVoucher] = useState(0);
+  const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     const getVouchers = async () => {
@@ -22,11 +26,23 @@ function Payment() {
         user.userId,
         state.companyId
       );
-
       console.log(response);
       setVouchers(response.data.data.vouchers);
     };
     getVouchers();
+  }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const getGifts = async () => {
+      const response = await giftApi.getGiftsAvailable(
+        user.userId,
+        state.companyId
+      );
+      console.log(response);
+      setGifts(response.data.data.giftCards);
+    };
+    getGifts();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -48,26 +64,53 @@ function Payment() {
     navigate("/booking/payment-stripe");
   };
 
-  const handleChangeVoucher = (e) => {
-    const checkMyVoucher = async () => {
+  const handleChangeGift = (e) => {
+    const checkMyGift = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
-      const response = await voucherApi.checkVoucher(
-        { amount: state.numberPeoples * 100000, code: e.target.value },
+      let amount = state.numberPeoples * 100000;
+      const response = await giftApi.checkGift(
         user.userId,
-        state.companyId
+        state.companyId,
+        e.target.value,
+        amount
       );
       dispatch(
         setBooking({
           ...state,
+          giftCode: e.target.value,
           discount: response.data.data.amount,
+        })
+      );
+      console.log(state);
+    };
+    checkMyGift();
+  };
+
+  const handleChangeVoucher = (e) => {
+    const checkMyVoucher = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const response = await voucherApi.checkVoucher(
+        {
+          amount: state.numberPeoples * 100000 - state.discount,
+          code: e.target.value,
+        },
+        user.userId,
+        state.companyId
+      );
+
+      console.log(response);
+
+      let discountOld = state.discount;
+      dispatch(
+        setBooking({
+          ...state,
+          discount: discountOld + response.data.data.amount,
           voucherCode: e.target.value,
         })
       );
     };
     checkMyVoucher();
   };
-
-  console.log(checkCondition);
 
   return (
     <div className="payment-wrapper">
@@ -147,7 +190,27 @@ function Payment() {
                     </div>
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
+                    <label className="form-label">
+                      Danh sách gift khả dụng{" "}
+                    </label>
+                    <select
+                      className="form-control"
+                      onChange={(e) => handleChangeGift(e)}
+                    >
+                      <option>Lựa chọn gift</option>
+                      {!gifts
+                        ? null
+                        : gifts.map((item, index) => {
+                            return (
+                              <option key={index} value={item.giftCardCode}>
+                                {item.title}
+                              </option>
+                            );
+                          })}
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">
                       Danh sách voucher khả dụng{" "}
                     </label>
                     <select

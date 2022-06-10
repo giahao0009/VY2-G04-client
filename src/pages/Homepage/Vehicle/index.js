@@ -32,9 +32,16 @@ function Vehicle() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const keyData = await stationApi.getStationByName(state.toAddress);
-      const data = await schedulerApi.filterScheduler(keyData.data.keyWord);
-      setSchedulers(data.data);
+      if (state.fromAddress == "Sân bay quốc tế Tân Sơn Nhất") {
+        const keyData = await stationApi.getStationByName(state.toAddress);
+        const data = await schedulerApi.filterScheduler(keyData.data.keyWord);
+        setSchedulers(data.data);
+      }
+      if (state.toAddress == "Sân bay quốc tế Tân Sơn Nhất") {
+        const keyData = await stationApi.getStationByName(state.fromAddress);
+        const data = await schedulerApi.filterScheduler(keyData.data.keyWord);
+        setSchedulers(data.data);
+      }
     };
     fetchData();
     return () => {
@@ -138,15 +145,6 @@ function Vehicle() {
                 >
                   <BiBusSchool className="vehicle-icon" /> Bus trung chuyển
                 </div>
-                <div
-                  className={
-                    typeVehicle == "train"
-                      ? "vehicle-item active"
-                      : "vehicle-item"
-                  }
-                >
-                  <BiTrain className="vehicle-icon" /> Tàu điện
-                </div>
               </div>
               <div className="list-booking">
                 {schedulers.map((item, index) => {
@@ -158,7 +156,7 @@ function Vehicle() {
                         </div>
                         <div className="col-8">
                           <div className="title">
-                            Xe bus trung tâm thành phố
+                            Xe bus trung tâm thành phố - Chuyến hai chiều
                           </div>
                           <div className="lt">Lịch trình</div>
                           <div>
